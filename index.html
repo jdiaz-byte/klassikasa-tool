@@ -192,6 +192,7 @@ select.fi{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.o
         <div class="fl"><div class="flab">Full Name</div><input class="fi" id="fn" type="text" placeholder="John & Maria Smith"></div>
         <div class="fl"><div class="flab">Phone</div><input class="fi" id="fph" type="tel" placeholder="(305) 000-0000"></div>
         <div class="fl ffc"><div class="flab">Property Address</div><input class="fi" id="fadr" type="text" placeholder="123 SW 8th St, Miami FL 33130"></div>
+        <div class="fl"><div class="flab">Sales Rep</div><input class="fi" id="frep" type="text" placeholder="Juan Diaz"></div>
         <div class="fl"><div class="flab">Property Type</div><select class="fi" id="ftype"><option value="">Select…</option><option>Single Family Home</option><option>Condo</option><option>Townhouse</option><option>Apartment</option></select></div>
         <div class="fl"><div class="flab">Owner or Renter</div><select class="fi" id="fown"><option value="">Select…</option><option>Owner</option><option>Renter</option></select></div>
         <div class="fl"><div class="flab">HOA / Association</div><input class="fi" id="fhoa" placeholder="Name or N/A"></div>
@@ -451,7 +452,7 @@ select.fi{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.o
     <div style="margin-top:14px;background:var(--sage-bg);border:1.5px solid var(--sage-b);border-radius:12px;padding:14px 16px;">
       <div style="font-size:11px;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;color:var(--sage);margin-bottom:6px;">⭐ Review Request</div>
       <div style="font-size:13px;color:var(--ink2);line-height:1.6;">We'd love to hear how your experience with us went. If Juan took great care of you today, a quick Google review means the world to us — it helps other families find a contractor they can trust.</div>
-      <div style="margin-top:8px;font-size:12px;font-weight:600;color:var(--sage);">👉 Search "Miami First Remodeling" on Google → Leave a review for Juan</div>
+      <div style="margin-top:8px;font-size:12px;font-weight:600;color:var(--sage);">👉 Search "Miami First Remodeling" on Google → Leave a review for <span id="prop-rep-name">your rep</span></div>
     </div>
 
     <div style="margin-top:12px;padding:12px 14px;background:var(--cream);border-radius:10px;font-size:12px;color:var(--ink4);line-height:1.6;">
@@ -466,45 +467,64 @@ select.fi{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.o
 <!-- ESTIMATE -->
 <div class="page" id="page-estimate">
   <div class="ewarn">🔒 Internal only — do not show to client.</div>
-  <div class="card"><div class="ch" onclick="tc(this)"><div class="ci" style="background:var(--copper-bg)">📊</div><div class="cinfo"><div class="ct">Live Estimate</div><div class="cs">Updates from checklist quantities</div></div><span class="chev o">▾</span></div><div class="cb o">
-  <!-- Gil's range override -->
-  <div style="background:var(--copper-bg);border:1.5px solid var(--copper-b);border-radius:10px;padding:12px 14px;margin-bottom:14px;">
-    <div style="font-size:10px;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;color:var(--copper);margin-bottom:8px;">Gil's Price Range</div>
-    <div style="font-size:12px;color:var(--ink3);margin-bottom:10px;">Enter the range Gil gave you — the tool will apply Good/Best multipliers to each end.</div>
-    <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
-      <div class="fl"><div class="flab">Gil Low ($)</div><input class="fi" id="gil-low" type="number" placeholder="e.g. 12000" oninput="updEst()" style="font-size:15px;"></div>
-      <div class="fl"><div class="flab">Gil High ($)</div><input class="fi" id="gil-high" type="number" placeholder="e.g. 15000" oninput="updEst()" style="font-size:15px;"></div>
-    </div>
-    <div style="font-size:10px;color:var(--copper);margin-top:8px;">💡 Leave blank to use the auto-calculated cost from your checklist</div>
-  </div>
-  <!-- Good / Best only (no Better) -->
-  <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:14px;">
-    <div class="tbox good">
-      <div class="tlbl good">Good — floor</div>
-      <div style="font-size:11px;color:var(--sage);margin-bottom:4px;">Low end</div>
-      <div class="tprice good" id="tg-low" style="font-size:20px;">$0</div>
-      <div style="font-size:11px;color:var(--sage);margin-top:6px;">High end</div>
-      <div class="tprice good" id="tg-high" style="font-size:20px;">$0</div>
-      <div class="tmo" id="tgmg">55% margin</div>
-    </div>
-    <div class="tbox best">
-      <div class="tlbl best">Best ★ — start here</div>
-      <div style="font-size:11px;color:var(--copper);margin-bottom:4px;">Low end</div>
-      <div class="tprice best" id="tbs-low" style="font-size:20px;">$0</div>
-      <div style="font-size:11px;color:var(--copper);margin-top:6px;">High end</div>
-      <div class="tprice best" id="tbs-high" style="font-size:20px;">$0</div>
-      <div class="tmg best" id="tbsmg">67% margin</div>
-    </div>
-  </div>
-  <div id="ebd"><div style="font-size:13px;color:var(--ink4);text-align:center;padding:8px 0;font-style:italic;">Add quantities or enter Gil's range above</div></div>
-</div></div>
-  <div class="card"><div class="ch" onclick="tc(this)"><div class="ci" style="background:var(--cream2)">⚙️</div><div class="cinfo"><div class="ct">Tier Multipliers</div><div class="cs">Good = floor — never go below</div></div><span class="chev">▾</span></div><div class="cb"><div class="mxr"><div class="mxl" style="color:var(--sage);font-weight:600;">Good — floor (never go below)</div><input class="mxi" id="mxg" type="number" value="2.22" step="0.01" oninput="updEst()"><div class="mxn" id="mxng" style="color:var(--sage);">55%</div></div><div class="mxr"><div class="mxl" style="color:var(--copper);font-weight:600;">Best — always start here</div><input class="mxi" id="mxbs" type="number" value="3.0" step="0.01" oninput="updEst()"><div class="mxn" id="mxnbs" style="color:var(--copper);">67%</div></div></div></div>
-  <div class="card"><div class="ch" onclick="tc(this)"><div class="ci" style="background:var(--cream2)">✏️</div><div class="cinfo"><div class="ct">Edit Unit Costs</div><div class="cs">Gil's internal cost per item</div></div><span class="chev">▾</span></div><div class="cb"><div id="cost-editor"></div></div></div>
-</div>
 
-  <div style="padding:0 16px 0;max-width:680px;margin:0 auto;">
-    <button class="cpbtn danger" onclick="resetEst()" style="margin-bottom:8px;">↺ Reset $ Values</button>
+  <!-- Simple price card -->
+  <div class="card">
+    <div class="ch" onclick="tc(this)"><div class="ci" style="background:var(--copper-bg)">💰</div><div class="cinfo"><div class="ct">Client Price</div><div class="cs">Based on unit costs below</div></div><span class="chev o">▾</span></div>
+    <div class="cb o">
+      <!-- Gil total row -->
+      <div style="display:flex;align-items:center;justify-content:space-between;padding:14px 0;border-bottom:1px solid var(--cream2);">
+        <div>
+          <div style="font-size:13px;font-weight:600;color:var(--ink2);">Gil's Total Cost</div>
+          <div style="font-size:11px;color:var(--ink4);">Auto from unit costs — or type Gil's number directly</div>
+        </div>
+        <div style="display:flex;align-items:center;gap:4px;">
+          <span style="color:var(--ink4);font-size:13px;">$</span>
+          <input class="mxi" id="gil-override" type="number" placeholder="auto" min="0" step="100"
+            oninput="S.gilOverride=parseFloat(this.value)||0;updEst();saveEst();"
+            style="width:100px;font-size:16px;">
+        </div>
+      </div>
+      <!-- Multiplier -->
+      <div style="display:flex;align-items:center;justify-content:space-between;padding:14px 0;border-bottom:1px solid var(--cream2);">
+        <div>
+          <div style="font-size:13px;font-weight:600;color:var(--ink2);">Multiplier</div>
+          <div style="font-size:11px;color:var(--ink4);">Start at 3.0 (67%) · Floor is 2.22 (55%)</div>
+        </div>
+        <div style="display:flex;align-items:center;gap:6px;">
+          <input class="mxi" id="mxbs" type="number" value="3.0" step="0.01" min="2.22"
+            oninput="S.mx=parseFloat(this.value)||3.0;updEst();saveEst();" style="width:72px;">
+          <div id="mxnbs" style="font-size:12px;font-weight:700;color:var(--copper);min-width:36px;">67%</div>
+        </div>
+      </div>
+      <!-- Result -->
+      <div style="padding:16px 0 4px;">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">
+          <div style="font-size:13px;color:var(--ink3);">Gil's cost</div>
+          <div style="font-size:15px;font-weight:600;color:var(--ink2);" id="est-cost">$0</div>
+        </div>
+        <div style="display:flex;justify-content:space-between;align-items:center;padding:14px 16px;background:var(--ink);border-radius:12px;">
+          <div style="font-family:'Cormorant Garamond',serif;font-size:18px;color:var(--cream);">Client Price</div>
+          <div style="font-family:'Cormorant Garamond',serif;font-size:28px;font-weight:500;color:var(--copper2);" id="est-price">$0</div>
+        </div>
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-top:8px;">
+          <div style="font-size:12px;color:var(--ink4);">18-month financing</div>
+          <div style="font-size:13px;font-weight:600;color:var(--ink3);" id="est-mo">—/mo</div>
+        </div>
+      </div>
+    </div>
   </div>
+
+  <!-- Unit cost breakdown -->
+  <div class="card">
+    <div class="ch" onclick="tc(this)"><div class="ci" style="background:var(--cream2)">✏️</div><div class="cinfo"><div class="ct">Edit Unit Costs</div><div class="cs">Only items from your checklist appear here</div></div><span class="chev">▾</span></div>
+    <div class="cb"><div id="cost-editor"></div></div>
+  </div>
+
+  <div style="padding:0 0 8px;">
+    <button class="cpbtn danger" onclick="resetEst()" style="margin-bottom:8px;">↺ Reset $ Values to Defaults</button>
+  </div>
+</div>
 </div><!-- /main -->
 <div class="bnav"><button class="nbtn nback" onclick="prevPg()">← Back</button><button class="nbtn nnext" onclick="nextPg()">Next →</button></div>
 <div class="toast" id="toast">Copied!</div>
@@ -734,7 +754,7 @@ const SCOPE_GRP={
   addition:['ad-main'],
 };
 
-const S={page:'client',pages:['client','flow','report','proposal','estimate'],scope:[],a:{},leg:null};
+const S={page:'client',pages:['client','flow','report','proposal','estimate'],scope:[],a:{},leg:null,gilOverride:0,mx:3.0};
 const ga=id=>S.a[id]||{};
 const sa=(id,p)=>{S.a[id]=Object.assign({},ga(id),p);};
 
@@ -879,35 +899,44 @@ function updateProgress(){
 }
 
 function getCost(k){const e=document.getElementById('cost-'+k);return e?(parseFloat(e.value)||0):(COSTS[k]?.cost||0);}
-function getMx(){return{good:parseFloat(document.getElementById('mxg')?.value)||2.22,best:parseFloat(document.getElementById('mxbs')?.value)||3.0};}
+function getMx(){return S.mx||3.0;}
 function toMg(m){return Math.round((1-1/m)*100)+'%';}
 function fmtFull(n){return'$'+Math.round(n).toLocaleString();}
 function fmtK(n){if(n===0)return'$0';if(n>=1000)return'$'+(n/1000).toFixed(1)+'K';return fmtFull(n);}
 function finPmt(p,apr,n){if(!p||p<=0)return'—';const r=apr/12/100;return fmtK(p*r*Math.pow(1+r,n)/(Math.pow(1+r,n)-1))+'/mo';}
 
+function calcCost(){
+  let total=0;const bd={};
+  function add(lbl,key,qty){const c=getCost(key);if(!c||!qty)return;const sub=c*qty;total+=sub;bd[lbl]=(bd[lbl]||0)+sub;}
+  Object.values(G).forEach(grp=>grp.items.forEach(item=>{
+    if(!item.costKey)return;
+    const a=ga(item.id),lbl=COSTS[item.costKey]?.label||item.costKey;
+    if(item.type==='qty'&&(a.qty||0)>0)add(lbl,item.costKey,a.qty);
+    if(item.type==='yesno'&&a.ans==='yes')add(lbl,item.costKey,1);
+    if(item.type==='yesqty'&&a.ans==='yes'&&(a.followQty||0)>0)add(lbl,item.costKey,a.followQty);
+  }));
+  return{total,bd};
+}
 function updEst(){
-  const{total,bd}=calcCost(),mx=getMx();
-  const gilLow=parseFloat(document.getElementById('gil-low')?.value)||0;
-  const gilHigh=parseFloat(document.getElementById('gil-high')?.value)||0;
-  const costLow=gilLow>0?gilLow:total;
-  const costHigh=gilHigh>0?gilHigh:(gilLow>0?gilLow:total);
-  const goodLow=costLow*mx.good,goodHigh=costHigh*mx.good;
-  const bestLow=costLow*mx.best,bestHigh=costHigh*mx.best;
+  const{total,bd}=calcCost();
+  const mx=getMx();
+  // Use manual override if set, otherwise use calculated total
+  const cost=S.gilOverride>0?S.gilOverride:total;
+  const clientPrice=cost*mx;
   const s=(id,v)=>{const e=document.getElementById(id);if(e)e.textContent=v;};
-  s('tg-low',fmtFull(goodLow));s('tg-high',fmtFull(goodHigh));
-  s('tbs-low',fmtFull(bestLow));s('tbs-high',fmtFull(bestHigh));
-  s('tgmg',toMg(mx.good)+' margin');s('tbsmg',toMg(mx.best)+' margin');
-  s('mxng',toMg(mx.good)+' margin');s('mxnbs',toMg(mx.best)+' margin');
+  s('est-cost',fmtFull(cost));
+  s('est-price',fmtFull(clientPrice));
+  s('est-mo',fmtK(clientPrice/18)+'/mo');
+  s('mxnbs',toMg(mx)+' margin');
+  s('mxng',toMg(mx)+' margin');
+  // Update override input placeholder to show auto value
+  const ov=document.getElementById('gil-override');
+  if(ov&&!S.gilOverride)ov.placeholder='$'+Math.round(total).toLocaleString()||'auto';
+  // Breakdown
   const bdEl=document.getElementById('ebd');
   if(bdEl){
-    if(!Object.keys(bd).length&&!gilLow){bdEl.innerHTML='<div style="font-size:13px;color:var(--ink4);text-align:center;padding:8px 0;font-style:italic;">Add quantities or enter Gil\'s range above</div>';}
-    else{
-      let h='';
-      if(gilLow>0)h+=`<div class="bdi"><span class="bdk" style="color:var(--copper);">Gil range override</span><span class="bdv" style="color:var(--copper);">${fmtFull(gilLow)}${gilHigh&&gilHigh!==gilLow?' – '+fmtFull(gilHigh):''}</span></div>`;
-      Object.keys(bd).forEach(l=>{h+=`<div class="bdi"><span class="bdk">${eh(l)}</span><span class="bdv">${fmtFull(bd[l])}</span></div>`;});
-      if(total>0)h+=`<div class="bdt"><span class="bdk">Calculated cost</span><span class="bdv">${fmtFull(total)}</span></div>`;
-      bdEl.innerHTML=h;
-    }
+    if(!Object.keys(bd).length){bdEl.innerHTML='<div style="font-size:13px;color:var(--ink4);text-align:center;padding:8px 0;font-style:italic;">Fill checklist to auto-calculate</div>';}
+    else{let h='';Object.keys(bd).forEach(l=>{h+=`<div class="bdi"><span class="bdk">${eh(l)}</span><span class="bdv">${fmtFull(bd[l])}</span></div>`;});h+=`<div class="bdt"><span>Total</span><span>${fmtFull(total)}</span></div>`;bdEl.innerHTML=h;}
   }
 }
 
@@ -1038,14 +1067,16 @@ function copyGilReport(){
 
 // ── PROPOSAL (Client-facing) ──
 function buildProposal(){
-  // Ensure cost editor is rendered and saved values loaded before calculating
-  if(!document.getElementById('cost-cab-base')){
-    renderCostEditor();
-    loadEst();
-  }
+  // Always ensure cost editor exists and values are loaded
+  renderCostEditor();
+  loadEst();
   // Date
   const el=document.getElementById('prop-date');
   if(el)el.textContent=new Date().toLocaleDateString('en-US',{year:'numeric',month:'long',day:'numeric'});
+  // Rep name
+  const rep=gv('frep')!=='—'?gv('frep'):'your rep';
+  const repEl=document.getElementById('prop-rep-name');
+  if(repEl)repEl.textContent=rep;
   // Greeting
   const name=gv('fn');
   const greet=document.getElementById('prop-greeting');
@@ -1095,34 +1126,28 @@ function buildProposal(){
 }
 
 function updProposal(){
-  const{total}=calcCost();const mx=getMx();
-  const gilLow=parseFloat(document.getElementById('gil-low')?.value)||0;
-  const gilHigh=parseFloat(document.getElementById('gil-high')?.value)||0;
-  const costLow=gilLow>0?gilLow:total;
-  const costHigh=gilHigh>0?gilHigh:(gilLow>0?gilLow:total);
-  const goodLow=costLow*mx.good,goodHigh=costHigh*mx.good;
-  const bestLow=costLow*mx.best,bestHigh=costHigh*mx.best;
+  const{total}=calcCost();
+  const mx=getMx();
+  const cost=S.gilOverride>0?S.gilOverride:total;
+  const clientPrice=cost*mx;
   const s=(id,v)=>{const e=document.getElementById(id);if(e)e.textContent=v;};
-  // Show range in proposal — use Best as headline
-  s('pt-good',goodLow===goodHigh?fmtFull(goodLow):fmtFull(goodLow)+' – '+fmtFull(goodHigh));
-  s('pt-best',bestLow===bestHigh?fmtFull(bestLow):fmtFull(bestLow)+' – '+fmtFull(bestHigh));
-  s('pt-good-mo',finPmt(goodLow,8.99,60)+' (60mo)');
-  s('pt-best-mo',finPmt(bestLow,8.99,60)+' (60mo)');
-  // Financing table
+  s('pt-good',fmtFull(clientPrice));
+  s('pt-best',fmtFull(clientPrice));
+  s('pt-good-mo',finPmt(clientPrice,8.99,60)+' (60mo)');
+  s('pt-best-mo',finPmt(clientPrice,8.99,60)+' (60mo)');
   [36,60,84].forEach(n=>{
-    s('fin-good-'+n,finPmt(goodLow,8.99,n));
-    s('fin-best-'+n,finPmt(bestLow,8.99,n));
+    s('fin-good-'+n,finPmt(clientPrice,8.99,n));
+    s('fin-best-'+n,finPmt(clientPrice,8.99,n));
   });
-  // Discount
   const pctOn=document.getElementById('disc-pct')?.checked;
   const pct=parseFloat(document.getElementById('disc-val')?.value)||10;
   const discEl=document.getElementById('disc-display');
   if(pctOn&&discEl){
     discEl.style.display='block';
-    const mult=(100-pct)/100;
-    s('pd-good',fmtFull(bestLow*mult)+' – '+fmtFull(bestHigh*mult));
-    s('pd-better','—');
-    s('pd-best',fmtFull(bestLow*mult));
+    const discPrice=clientPrice*(100-pct)/100;
+    s('pd-good',fmtFull(discPrice));
+    s('pd-better',fmtFull(discPrice));
+    s('pd-best',fmtFull(discPrice));
   } else if(discEl){discEl.style.display='none';}
 }
 
@@ -1167,7 +1192,7 @@ function copyProposal(){
   }
   const pnotes=document.getElementById('prop-notes')?.value?.trim();
   if(pnotes)t+=`\n${pnotes}\n`;
-  t+=`\n⭐ HOW DID WE DO?\nIf Juan took great care of you today, a quick Google review means the world to us — it helps other families find a contractor they can trust.\n👉 Search "Miami First Remodeling" on Google and leave a review for Juan.\n`;
+  t+=`\n⭐ HOW DID WE DO?\nIf ${gv('frep')!=='—'?gv('frep'):'your rep'} took great care of you today, a quick Google review means the world to us — it helps other families find a contractor they can trust.\n👉 Search "Miami First Remodeling" on Google and leave a review for ${gv('frep')!=='—'?gv('frep'):'us'}.\n`;
   t+=`\nThis estimate is valid for 30 days from today.\n`;
   t+=`\nMiami First Remodeling Corporation · CGC1530409\n29 S Federal Hwy Unit B, Dania Beach FL 33004\n`;
   navigator.clipboard.writeText(t).then(()=>showToast('Proposal copied!')).catch(()=>alert(t));
@@ -1217,14 +1242,15 @@ function resetAll(){
 }
 
 // ── PERSISTENCE — $ tab values survive page changes ──
-const LS_KEY = 'klass_est_v1';
+const LS_KEY = 'klass_est_v4';
+const LS_REP = 'klass_rep_v4';
+function saveRep(){try{const v=document.getElementById('frep')?.value||'';localStorage.setItem(LS_REP,v);}catch(e){}}
+function loadRep(){try{const v=localStorage.getItem(LS_REP);if(v){const e=document.getElementById('frep');if(e)e.value=v;}}catch(e){}}
 function saveEst(){
   try{
     const d={
-      gilLow:document.getElementById('gil-low')?.value||'',
-      gilHigh:document.getElementById('gil-high')?.value||'',
-      mxg:document.getElementById('mxg')?.value||'',
-      mxbs:document.getElementById('mxbs')?.value||'',
+      gilOverride:S.gilOverride||0,
+      mx:S.mx||3.0,
       costs:{}
     };
     Object.keys(COSTS).forEach(k=>{const e=document.getElementById('cost-'+k);if(e)d.costs[k]=e.value;});
@@ -1235,34 +1261,29 @@ function loadEst(){
   try{
     const raw=localStorage.getItem(LS_KEY);if(!raw)return;
     const d=JSON.parse(raw);
-    const sv=(id,v)=>{const e=document.getElementById(id);if(e&&v!=='')e.value=v;};
-    sv('gil-low',d.gilLow);sv('gil-high',d.gilHigh);
-    sv('mxg',d.mxg);sv('mxbs',d.mxbs);
-    if(d.costs)Object.keys(d.costs).forEach(k=>sv('cost-'+k,d.costs[k]));
+    S.gilOverride=parseFloat(d.gilOverride)||0;
+    if(S.gilOverride>0){const e=document.getElementById('gil-override');if(e)e.value=S.gilOverride;}
+    if(d.mx){S.mx=parseFloat(d.mx)||3.0;const e=document.getElementById('mxbs');if(e)e.value=S.mx;}
+    if(d.costs)Object.keys(d.costs).forEach(k=>{const e=document.getElementById('cost-'+k);if(e&&d.costs[k]!=='')e.value=d.costs[k];});
   }catch(e){}
 }
 function resetEst(){
   if(!confirm('Reset all $ values to defaults?'))return;
   try{localStorage.removeItem(LS_KEY);}catch(e){}
-  const sv=(id,v)=>{const e=document.getElementById(id);if(e)e.value=v;};
-  sv('gil-low','');sv('gil-high','');sv('mxg','2.22');sv('mxbs','3.0');
-  Object.keys(COSTS).forEach(k=>sv('cost-'+k,COSTS[k].cost));
+  S.gilOverride=0;
+  const ov=document.getElementById('gil-override');if(ov)ov.value='';
+  S.mx=3.0;const mx=document.getElementById('mxbs');if(mx)mx.value='3.0';
+  Object.keys(COSTS).forEach(k=>{const e=document.getElementById('cost-'+k);if(e)e.value=COSTS[k].cost;});
   updEst();showToast('$ values reset to defaults');
-}
-
-// ── PDF DOWNLOAD ──
-function dlPDF(){
-  // Switch to proposal page, then print
-  showPg('proposal');
-  setTimeout(()=>{
-    window.print();
-  },400);
 }
 
 function initAll(){
   Object.keys(G).forEach(k=>renderGrp(k));
   renderCostEditor();
-  loadEst(); // restore saved $ values
+  loadEst();
+  loadRep();
+  // Wire rep name save
+  document.getElementById('frep')?.addEventListener('input', saveRep);
   // Wire up save on any $ input change
   document.addEventListener('input',e=>{
     if(e.target.closest('#page-estimate')){
