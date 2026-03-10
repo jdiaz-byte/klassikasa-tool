@@ -1,0 +1,1118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<title>Klassikasa</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --cream:#F7F5F0; --cream2:#EFEDE7; --cream3:#E5E2DA;
+  --ink:#111009; --ink2:#2C2A25; --ink3:#5C5950; --ink4:#9C9A94;
+  --copper:#B8732A; --copper2:#D4924A; --copper-bg:#FBF3E8; --copper-b:#E8C898;
+  --sage:#3A6B52; --sage-bg:#EBF3EE; --sage-b:#A8CDB8;
+  --slate:#2D4A6B; --slate-bg:#EBF0F7; --slate-b:#A8BDD4;
+  --red:#C0392B; --red-bg:#FBF0EE; --white:#fff; --r:16px;
+  --sh0:0 1px 3px rgba(17,16,9,0.06); --sh1:0 4px 16px rgba(17,16,9,0.08);
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;}
+body{font-family:'Outfit',sans-serif;background:var(--cream);color:var(--ink);min-height:100%;font-size:15px;line-height:1.5;-webkit-font-smoothing:antialiased;}
+.pline{position:fixed;top:0;left:0;right:0;height:3px;background:var(--cream3);z-index:1000;}
+.pline-fill{height:100%;background:linear-gradient(90deg,var(--copper),var(--copper2));transition:width .5s;width:0%;}
+.header{background:var(--white);border-bottom:1px solid var(--cream3);padding:16px 18px 0;position:sticky;top:3px;z-index:100;}
+.header-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;}
+.wordmark{font-family:'Cormorant Garamond',serif;font-size:20px;font-weight:400;letter-spacing:.04em;}
+.wordmark em{font-style:italic;color:var(--copper);}
+.hmeta{display:flex;align-items:center;gap:10px;}
+.ppct{font-size:12px;font-weight:600;color:var(--ink4);}
+.rbtn{width:32px;height:32px;border-radius:50%;border:1.5px solid var(--cream3);background:var(--cream);color:var(--ink3);font-size:14px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .2s;}
+.rbtn:active{background:var(--cream2);transform:rotate(180deg);}
+.tbar{display:flex;overflow-x:auto;scrollbar-width:none;margin:0 -18px;padding:0 18px;}
+.tbar::-webkit-scrollbar{display:none;}
+.ti{flex-shrink:0;padding:10px 13px 12px;font-size:13px;font-weight:600;color:var(--ink4);border:none;background:transparent;cursor:pointer;position:relative;transition:color .2s;white-space:nowrap;}
+.ti::after{content:'';position:absolute;bottom:0;left:0;right:0;height:2px;background:var(--copper);border-radius:2px 2px 0 0;transform:scaleX(0);transition:transform .25s;}
+.ti.active{color:var(--copper);}
+.ti.active::after{transform:scaleX(1);}
+.ti.int{font-style:italic;}
+.ti.int.active{font-style:normal;}
+.main{padding:22px 16px 130px;max-width:680px;margin:0 auto;}
+.page{display:none;animation:fu .22s ease;}
+.page.active{display:block;}
+@keyframes fu{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
+.card{background:var(--white);border:1px solid var(--cream3);border-radius:var(--r);margin-bottom:13px;overflow:hidden;box-shadow:var(--sh0);}
+.ch{display:flex;align-items:center;padding:15px 17px;cursor:pointer;user-select:none;gap:12px;transition:background .15s;}
+.ch:active{background:var(--cream);}
+.ci{width:35px;height:35px;border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:17px;flex-shrink:0;}
+.cinfo{flex:1;min-width:0;}
+.ct{font-family:'Cormorant Garamond',serif;font-size:17px;font-weight:500;color:var(--ink);line-height:1.2;}
+.cs{font-size:11px;color:var(--ink4);margin-top:2px;}
+.cbadge{font-size:11px;font-weight:700;padding:3px 9px;border-radius:99px;white-space:nowrap;flex-shrink:0;}
+.bn{background:var(--cream2);color:var(--ink3);}
+.bd{background:var(--sage-bg);color:var(--sage);}
+.chev{color:var(--cream3);font-size:10px;flex-shrink:0;transition:transform .25s;}
+.chev.o{transform:rotate(180deg);color:var(--ink4);}
+.cb{display:none;padding:0 17px 17px;border-top:1px solid var(--cream2);}
+.cb.o{display:block;}
+.fg{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:15px;}
+.ffc{grid-column:1/-1;}
+.fl{display:flex;flex-direction:column;gap:5px;}
+.flab{font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--ink4);}
+.fi{background:var(--cream);border:1.5px solid var(--cream3);border-radius:10px;padding:10px 12px;font-family:'Outfit',sans-serif;font-size:14px;color:var(--ink);outline:none;width:100%;transition:border-color .2s,background .2s;appearance:none;}
+.fi:focus{border-color:var(--copper);background:var(--white);}
+textarea.fi{resize:none;min-height:68px;}
+select.fi{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%239C9A94' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 12px center;padding-right:32px;cursor:pointer;}
+.leg-row{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px;}
+.lbadge{display:inline-flex;align-items:center;gap:6px;padding:8px 16px;border-radius:99px;font-size:13px;font-weight:600;cursor:pointer;border:1.5px solid var(--cream3);background:var(--cream);color:var(--ink4);transition:all .18s;}
+.lbadge.two{background:var(--sage-bg);border-color:var(--sage-b);color:var(--sage);}
+.lbadge.one{background:var(--copper-bg);border-color:var(--copper-b);color:var(--copper);}
+.aiwrap{position:relative;}
+.aibtn{position:absolute;top:9px;right:9px;display:flex;align-items:center;gap:4px;padding:5px 11px;border-radius:99px;border:1.5px solid var(--copper-b);background:var(--copper-bg);color:var(--copper);font-family:'Outfit',sans-serif;font-size:11px;font-weight:700;cursor:pointer;transition:all .2s;white-space:nowrap;}
+.aibtn:hover{background:var(--copper);color:white;}
+.aibtn:disabled{opacity:.5;cursor:wait;}
+.spw{display:flex;flex-wrap:wrap;gap:8px;margin-top:15px;}
+.sp{display:flex;align-items:center;gap:6px;padding:8px 14px;border-radius:99px;border:1.5px solid var(--cream3);background:var(--cream);font-size:13px;font-weight:500;color:var(--ink3);cursor:pointer;transition:all .2s;}
+.sp.on{background:var(--ink);border-color:var(--ink);color:var(--cream);}
+.snotice{text-align:center;padding:40px 16px;color:var(--ink4);font-style:italic;font-size:14px;}
+.snotice strong{display:block;font-family:'Cormorant Garamond',serif;font-size:20px;color:var(--ink3);margin-bottom:6px;font-style:normal;}
+.qi{padding:12px 0;border-bottom:1px solid var(--cream2);}
+.qi:last-child{border-bottom:none;}
+.qrow{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;}
+.ql{flex:1;min-width:0;}
+.qq{font-size:14px;font-weight:500;color:var(--ink);line-height:1.4;transition:color .2s;}
+.qq.ans{color:var(--ink4);text-decoration:line-through;text-decoration-color:var(--cream3);}
+.qp{display:inline-flex;align-items:center;background:var(--ink);color:var(--cream);font-size:11px;font-weight:700;padding:2px 9px;border-radius:99px;margin-left:7px;vertical-align:middle;}
+.qh{font-size:11px;color:var(--ink4);margin-top:3px;line-height:1.4;}
+.qtag{display:inline-block;font-size:10px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;padding:2px 8px;border-radius:5px;margin-top:5px;}
+.tp{background:var(--copper-bg);color:var(--copper);}
+.tu{background:var(--sage-bg);color:var(--sage);}
+.ta{background:var(--red-bg);color:var(--red);}
+.yn{display:flex;gap:5px;flex-shrink:0;}
+.ynb{width:44px;height:34px;border-radius:9px;border:1.5px solid var(--cream3);background:var(--cream);font-family:'Outfit',sans-serif;font-size:13px;font-weight:600;color:var(--ink4);cursor:pointer;transition:all .18s;}
+.ynb.y.on{background:var(--ink);border-color:var(--ink);color:white;transform:scale(1.04);}
+.ynb.n.on{background:var(--cream3);border-color:var(--cream3);color:var(--ink3);transform:scale(1.04);}
+.stpr{display:flex;align-items:center;gap:2px;background:var(--cream2);border-radius:10px;padding:2px;flex-shrink:0;}
+.sbtn{width:30px;height:30px;border-radius:8px;border:none;background:transparent;color:var(--ink3);font-size:17px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .15s;}
+.sbtn:active{background:var(--ink);color:white;border-radius:7px;}
+.sval{width:32px;text-align:center;font-family:'Cormorant Garamond',serif;font-size:19px;font-weight:500;color:var(--ink);line-height:1;}
+.sval.z{color:var(--cream3);}
+.fup{display:flex;align-items:center;justify-content:space-between;margin-top:9px;padding:10px 13px;background:var(--cream);border-radius:10px;border:1.5px solid var(--cream3);animation:sd .2s ease;}
+@keyframes sd{from{opacity:0;transform:translateY(-5px)}to{opacity:1;transform:translateY(0)}}
+.fupl{font-size:13px;font-weight:600;color:var(--ink2);}
+.opts{display:flex;flex-wrap:wrap;gap:7px;margin-top:9px;}
+.opt{padding:7px 13px;border-radius:99px;border:1.5px solid var(--cream3);background:var(--cream);font-size:13px;font-weight:500;color:var(--ink3);cursor:pointer;transition:all .18s;}
+.opt.on{background:var(--ink);border-color:var(--ink);color:white;}
+.fchk{width:27px;height:27px;border-radius:8px;border:2px solid var(--cream3);background:white;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .18s;flex-shrink:0;}
+.fchk.on{background:var(--sage);border-color:var(--sage);}
+.fchk.on::after{content:'✓';color:white;font-size:13px;font-weight:700;}
+.scr{background:var(--copper-bg);border-left:3px solid var(--copper);border-radius:0 10px 10px 0;padding:11px 14px;margin:11px 0;}
+.scrl{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--copper);margin-bottom:4px;}
+.scrt{font-family:'Cormorant Garamond',serif;font-size:15px;font-weight:300;font-style:italic;color:var(--ink2);line-height:1.7;}
+.phase{display:flex;align-items:center;gap:13px;background:var(--ink);border-radius:var(--r);padding:15px 17px;margin-bottom:13px;}
+.phn{font-family:'Cormorant Garamond',serif;font-size:27px;font-weight:300;color:var(--copper);line-height:1;flex-shrink:0;width:28px;text-align:center;}
+.pht{font-family:'Cormorant Garamond',serif;font-size:18px;font-weight:400;color:white;margin-bottom:2px;}
+.phs{font-size:12px;color:rgba(247,245,240,.5);line-height:1.4;}
+.ewarn{background:var(--copper-bg);border:1px solid var(--copper-b);border-radius:10px;padding:10px 14px;margin-bottom:15px;font-size:12px;font-weight:500;color:var(--copper);}
+.trow{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-bottom:17px;}
+.tbox{border-radius:12px;padding:14px 11px;text-align:center;}
+.tbox.good{background:var(--sage-bg);border:1.5px solid var(--sage-b);}
+.tbox.better{background:var(--slate-bg);border:1.5px solid var(--slate-b);}
+.tbox.best{background:var(--copper-bg);border:1.5px solid var(--copper-b);}
+.tlbl{font-size:9px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;margin-bottom:6px;}
+.tlbl.good{color:var(--sage);}.tlbl.better{color:var(--slate);}.tlbl.best{color:var(--copper);}
+.tprice{font-family:'Cormorant Garamond',serif;font-size:23px;font-weight:500;line-height:1;}
+.tprice.good{color:var(--sage);}.tprice.better{color:var(--slate);}.tprice.best{color:var(--copper);}
+.tmo{font-size:10px;color:var(--ink4);margin-top:4px;}
+.tmg{font-size:10px;font-weight:700;margin-top:2px;}
+.tmg.good{color:var(--sage);}.tmg.better{color:var(--slate);}.tmg.best{color:var(--copper);}
+.mxr{display:flex;align-items:center;justify-content:space-between;padding:9px 0;border-bottom:1px solid var(--cream2);gap:12px;}
+.mxr:last-child{border-bottom:none;}
+.mxl{font-size:13px;font-weight:500;color:var(--ink2);flex:1;}
+.mxn{font-size:11px;font-weight:700;color:var(--ink4);min-width:72px;text-align:right;}
+.mxi{width:68px;background:var(--white);border:1.5px solid var(--cream3);border-radius:8px;padding:6px 8px;font-family:'Cormorant Garamond',serif;font-size:16px;font-weight:500;color:var(--ink);text-align:center;outline:none;transition:border-color .2s;}
+.mxi:focus{border-color:var(--copper);}
+.bdi{display:flex;justify-content:space-between;padding:7px 0;border-bottom:1px solid var(--cream2);font-size:13px;}
+.bdi:last-child{border-bottom:none;}
+.bdk{color:var(--ink3);}.bdv{font-weight:600;color:var(--ink);}
+.bdt{display:flex;justify-content:space-between;padding:11px 0 0;margin-top:4px;border-top:2px solid var(--cream3);font-size:14px;font-weight:600;}
+.rb{background:var(--white);border:1px solid var(--cream3);border-radius:var(--r);padding:17px;margin-bottom:13px;box-shadow:var(--sh0);}
+.rt{font-family:'Cormorant Garamond',serif;font-size:19px;font-weight:400;color:var(--ink);margin-bottom:13px;}
+.rrow{display:flex;justify-content:space-between;align-items:flex-start;padding:8px 0;border-bottom:1px solid var(--cream2);font-size:13px;gap:12px;}
+.rrow:last-child{border-bottom:none;}
+.rk{color:var(--ink4);font-weight:500;flex-shrink:0;}
+.rv{color:var(--ink);font-weight:500;text-align:right;}
+.rh{font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--copper);margin:13px 0 5px;}
+.cpbtn{width:100%;padding:13px;background:var(--ink);color:var(--cream);border:none;border-radius:12px;font-family:'Outfit',sans-serif;font-size:14px;font-weight:600;cursor:pointer;letter-spacing:.02em;transition:all .2s;margin-top:11px;}
+.cpbtn:active{transform:scale(.99);}
+.cpbtn.danger{background:var(--red);}
+.bnav{position:fixed;bottom:0;left:0;right:0;background:rgba(255,255,255,.96);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border-top:1px solid var(--cream3);padding:9px 15px 26px;display:flex;gap:8px;z-index:200;}
+.nbtn{flex:1;padding:12px;border:none;border-radius:11px;font-family:'Outfit',sans-serif;font-size:14px;font-weight:600;cursor:pointer;transition:all .18s;}
+.nback{background:var(--cream2);color:var(--ink3);}
+.nnext{background:var(--ink);color:var(--cream);}
+.nnext:active{transform:scale(.99);}
+.toast{position:fixed;bottom:90px;left:50%;transform:translateX(-50%);background:var(--sage);color:white;padding:10px 22px;border-radius:99px;font-size:13px;font-weight:600;opacity:0;pointer-events:none;transition:opacity .3s;z-index:999;white-space:nowrap;}
+.toast.show{opacity:1;}
+@media(min-width:600px){.main{padding:26px 22px 130px;}}
+</style>
+</head>
+<body>
+<div class="pline"><div class="pline-fill" id="pf"></div></div>
+<div class="header">
+  <div class="header-top">
+    <div class="wordmark">Klassikasa <em>×</em> MF</div>
+    <div class="hmeta"><span class="ppct" id="ppct">0%</span><button class="rbtn" onclick="resetAll()" title="New visit">↺</button></div>
+  </div>
+  <div class="tbar" id="tbar"></div>
+</div>
+<div class="main">
+
+<!-- CLIENT -->
+<div class="page" id="page-client">
+  <div class="card">
+    <div class="ch" onclick="tc(this)"><div class="ci" style="background:var(--slate-bg)">👤</div><div class="cinfo"><div class="ct">Client Information</div><div class="cs">Name, property, contact</div></div><span class="chev o">▾</span></div>
+    <div class="cb o">
+      <div class="fg">
+        <div class="fl"><div class="flab">Full Name</div><input class="fi" id="fn" type="text" placeholder="John & Maria Smith"></div>
+        <div class="fl"><div class="flab">Phone</div><input class="fi" id="fph" type="tel" placeholder="(305) 000-0000"></div>
+        <div class="fl ffc"><div class="flab">Property Address</div><input class="fi" id="fadr" type="text" placeholder="123 SW 8th St, Miami FL 33130"></div>
+        <div class="fl"><div class="flab">Property Type</div><select class="fi" id="ftype"><option value="">Select…</option><option>Single Family Home</option><option>Condo</option><option>Townhouse</option><option>Apartment</option></select></div>
+        <div class="fl"><div class="flab">Owner or Renter</div><select class="fi" id="fown"><option value="">Select…</option><option>Owner</option><option>Renter</option></select></div>
+        <div class="fl"><div class="flab">HOA / Association</div><input class="fi" id="fhoa" placeholder="Name or N/A"></div>
+        <div class="fl"><div class="flab">HOA Phone</div><input class="fi" id="fhoap" type="tel" placeholder="(305) 000-0000"></div>
+        <div class="fl"><div class="flab">Timeline</div><select class="fi" id="ftl"><option value="">Select…</option><option>ASAP — ready now</option><option>1–3 months</option><option>3–6 months</option><option>Just exploring</option></select></div>
+        <div class="fl"><div class="flab">Other Quotes</div><select class="fi" id="fq"><option value="">Select…</option><option>No — first quote</option><option>Yes — 1 other</option><option>Yes — 2 or more</option></select></div>
+        <div class="fl ffc"><div class="flab">Budget Mentioned</div><input class="fi" id="fbud" type="text" placeholder="e.g. $30,000" oninput="fmtBudget(this)" inputmode="numeric"></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="ch" onclick="tc(this)"><div class="ci" style="background:var(--copper-bg)">🤝</div><div class="cinfo"><div class="ct">Decision Makers</div><div class="cs">Who is present today?</div></div><span class="chev o">▾</span></div>
+    <div class="cb o">
+      <div style="margin-top:13px;">
+        <div class="flab" style="margin-bottom:9px;">Legs present at visit</div>
+        <div class="leg-row">
+          <button class="lbadge" id="leg2" onclick="setLeg(2)">✓ Both present — 2 legs</button>
+          <button class="lbadge" id="leg1" onclick="setLeg(1)">⚠ One missing — 1 leg</button>
+        </div>
+        <div id="miss-wrap" style="display:none;margin-top:11px;">
+          <div class="fl"><div class="flab">Who is missing?</div><input class="fi" id="fmiss" placeholder="e.g. Husband at work, wife returns Thursday"></div>
+        </div>
+        <div class="scr" style="margin-top:13px;"><div class="scrl">If 1 leg — say this</div><div class="scrt">"I want to make sure your partner is part of this — would it work to do a quick 20-minute call when they're back? I want you both to feel great about this decision."</div></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="ch" onclick="tc(this)"><div class="ci" style="background:var(--sage-bg)">🎯</div><div class="cinfo"><div class="ct">Discovery — What They Want</div><div class="cs">Their words, not yours</div></div><span class="chev o">▾</span></div>
+    <div class="cb o">
+      <div style="margin-top:13px;">
+        <div class="scr"><div class="scrl">Ask this</div><div class="scrt">"What's most important to you in this project? What would make this a 10 out of 10?"</div></div>
+        <div class="fl aiwrap">
+          <div class="flab">Their words — rough notes</div>
+          <textarea class="fi" id="fgoal" placeholder="Write exactly what they said — no filter, just capture it…" style="min-height:88px;padding-right:90px;"></textarea>
+          <button class="aibtn" id="aibtn" onclick="genGoal()">✨ Polish</button>
+        </div>
+        <div id="airesult" style="display:none;margin-top:10px;">
+          <div class="flab" style="margin-bottom:6px;">Polished version</div>
+          <div id="aitext" style="background:var(--slate-bg);border:1.5px solid var(--slate-b);border-radius:10px;padding:11px 13px;font-size:13px;color:var(--slate);line-height:1.6;"></div>
+          <button onclick="useAI()" style="margin-top:8px;padding:7px 15px;border-radius:99px;border:1.5px solid var(--slate-b);background:var(--slate);color:white;font-size:12px;font-weight:600;cursor:pointer;">Use this →</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="ch" onclick="tc(this)"><div class="ci" style="background:var(--copper-bg)">🏠</div><div class="cinfo"><div class="ct">Scope of Work</div><div class="cs">Select → those tabs appear automatically</div></div><span class="chev o">▾</span></div>
+    <div class="cb o">
+      <div class="spw" id="spw">
+        <button class="sp" onclick="tog(this,'kitchen')">🍳 Kitchen</button>
+        <button class="sp" onclick="tog(this,'bathroom')">🚿 Bathroom</button>
+        <button class="sp" onclick="tog(this,'master')">🛁 Master Bath</button>
+        <button class="sp" onclick="tog(this,'floors')">🔲 Floors</button>
+        <button class="sp" onclick="tog(this,'windows')">🪟 Windows</button>
+        <button class="sp" onclick="tog(this,'paint')">🖌 Paint</button>
+        <button class="sp" onclick="tog(this,'closet')">👔 Closet</button>
+        <button class="sp" onclick="tog(this,'patio')">🌿 Patio</button>
+        <button class="sp" onclick="tog(this,'addition')">🏡 Addition</button>
+        <button class="sp" onclick="tog(this,'fullhome')">⭐ Full Home</button>
+      </div>
+      <div style="margin-top:13px;"><div class="fl"><div class="flab">Additional notes</div><textarea class="fi" id="fsnotes" placeholder="ADA accessible, second floor only, match existing floors…" style="min-height:50px;"></textarea></div></div>
+    </div>
+  </div>
+</div>
+
+<!-- KITCHEN -->
+<div class="page" id="page-kitchen">
+  <div class="card"><div class="ch" onclick="tc(this)"><div class="ci" style="background:var(--copper-bg)">💎</div><div class="cinfo"><div class="ct">Countertops — Slabs</div><div class="cs">Biggest pricing driver — start here</div></div><div class="cbadge bn" id="cb-k-slabs">0/5</div><span class="chev o">▾</span></div><div class="cb o"><div class="scr"><div class="scrl">Say to client</div><div class="scrt">"Before I give you any number, I need to count your slabs. It's the single biggest driver in pricing."</div></div><div id="qi-k-slabs"></div></div></div>
+  <div class="card"><div class="ch" onclick="tc(this)"><div class="ci" style="background:var(--slate-bg)">🪵</div><div class="cinfo"><div class="ct">Cabinets — Count by Box</div><div class="cs">Each unit = 1 box regardless of drawers</div></div><div class="cbadge bn" id="cb-k-cabs">0/6</div><span class="chev">▾</span></div><div class="cb"><div id="qi-k-cabs"></div></div></div>
+  <div class="card"><div class="ch" onclick="tc(this)"><div class="ci" style="background:var(--red-bg)">🔨</div><div class="cinfo"><div class="ct">Demo & Labor</div><div class="cs">Gut, walls, paint</div></div><div class="cbadge bn" id="cb-k-demo">0/3</div><span class="chev">▾</span></div><div class="cb"><div id="qi-k-demo"></div></div></div>
+  <div class="card"><div class="ch" onclick="tc(this)"><div class="ci" style="background:var(--sage-bg)">🔧</div><div class="cinfo"><div class="ct">Plumbing</div><div class="cs">Sink, dishwasher, gas, pot filler</div></div><div class="cbadge bn" id="cb-k-plumb">0/5</div><span class="chev">▾</span></div><div class="cb"><div id="qi-k-plumb"></div></div></div>
+  <div class="card"><div class="ch" onclick="tc(this)"><div class="ci" style="background:#FFFBEB">⚡</div><div class="cinfo"><div class="ct">Electrical</div><div class="cs">Lighting, hood, outlets</div></div><div class="cbadge bn" id="cb-k-elec">0/4</div><span class="chev">▾</span></div><div class="cb"><div id="qi-k-elec"></div></div></div>
+  <div class="card"><div class="ch" onclick="tc(this)"><div class="ci" style="background:#FAF5FF">🔲</div><div class="cinfo"><div class="ct">Kitchen Flooring</div><div class="cs">Only if replacing — skip if keeping existing</div></div><div class="cbadge bn" id="cb-k-floor">0/3</div><span class="chev">▾</span></div><div class="cb"><div id="qi-k-floor"></div></div></div>
+</div>
+
+<!-- BATHROOM -->
+<div class="page" id="page-bathroom">
+  <div class="card"><div class="ch" onclick="tc(this)"><div class="ci" style="background:var(--copper-bg)">🚿</div><div class="cinfo"><div class="ct">Shower & Tub</div><div class="cs">Setup, slabs, glass, pan</div></div><div class="cbadge bn" id="cb-b-shower">0/7</div><span class="chev o">▾</span></div><div class="cb o"><div id="qi-b-shower"></div></div></div>
+  <div class="card"><div class="ch" onclick="tc(this)"><div class="ci" style="background:var(--slate-bg)">🪥</div><div class="cinfo"><div class="ct">Vanity & Countertop</div><div class="cs">Boxes, slabs, mirrors</div></div><div class="cbadge bn" id="cb-b-vanity">0/5</div><span class="chev">▾</span></div><div class="cb"><div id="qi-b-vanity"></div></div></div>
+  <div class="card"><div class="ch" onclick="tc(this)"><div class="ci" style="background:var(--sage-bg)">🔧</div><div class="cinfo"><div class="ct">Plumbing & Electrical</div><div class="cs">Toilet, GFCI, heated floor</div></div><div class="cbadge bn" id="cb-b-plumb">0/5</div><span class="chev">▾</span></div><div class="cb"><div id="qi-b-plumb"></div></div></div>
+  <div class="card"><div class="ch" onclick="tc(this)"><div class="ci" style="background:#FAF5FF">🔲</div><div class="cinfo"><div class="ct">Tile & Flooring</div><div class="cs">Square footage, format</div></div><div class="cbadge bn" id="cb-b-tile">0/3</div><span class="chev">▾</span></div><div class="cb"><div id="qi-b-tile"></div></div></div>
+  <div class="card"><div class="ch" onclick="tc(this)"><div class="ci" style="background:var(--red-bg)">🔨</div><div class="cinfo"><div class="ct">Demo & Finishing</div><div class="cs">Full gut, paint</div></div><div class="cbadge bn" id="cb-b-demo">0/2</div><span class="chev">▾</span></div><div class="cb"><div id="qi-b-demo"></div></div></div>
+</div>
+
+<!-- MASTER -->
+<div class="page" id="page-master">
+  <div class="card"><div class="ch" onclick="tc(this)"><div class="ci" style="background:var(--copper-bg)">🚿</div><div class="cinfo"><div class="ct">Walk-in Shower</div><div class="cs">Slabs, glass, steam</div></div><div class="cbadge bn" id="cb-m-shower">0/7</div><span class="chev o">▾</span></div><div class="cb o"><div id="qi-m-shower"></div></div></div>
+  <div class="card"><div class="ch" onclick="tc(this)"><div class="ci" style="background:var(--copper-bg)">🛁</div><div class="cinfo"><div class="ct">Soaking Tub</div><div class="cs">Freestanding or built-in</div></div><div class="cbadge bn" id="cb-m-tub">0/3</div><span class="chev">▾</span></div><div class="cb"><div id="qi-m-tub"></div></div></div>
+  <div class="card"><div class="ch" onclick="tc(this)"><div class="ci" style="background:var(--slate-bg)">🪥</div><div class="cinfo"><div class="ct">Double Vanity</div><div class="cs">Boxes, slabs, mirrors</div></div><div class="cbadge bn" id="cb-m-vanity">0/5</div><span class="chev">▾</span></div><div class="cb"><div id="qi-m-vanity"></div></div></div>
+  <div class="card"><div class="ch" onclick="tc(this)"><div class="ci" style="background:var(--sage-bg)">🔧</div><div class="cinfo"><div class="ct">Plumbing & Electrical</div></div><div class="cbadge bn" id="cb-m-plumb">0/5</div><span class="chev">▾</span></div><div class="cb"><div id="qi-m-plumb"></div></div></div>
+  <div class="card"><div class="ch" onclick="tc(this)"><div class="ci" style="background:#FAF5FF">🔲</div><div class="cinfo"><div class="ct">Tile & Flooring</div></div><div class="cbadge bn" id="cb-m-tile">0/3</div><span class="chev">▾</span></div><div class="cb"><div id="qi-m-tile"></div></div></div>
+  <div class="card"><div class="ch" onclick="tc(this)"><div class="ci" style="background:var(--red-bg)">🔨</div><div class="cinfo"><div class="ct">Demo</div></div><div class="cbadge bn" id="cb-m-demo">0/2</div><span class="chev">▾</span></div><div class="cb"><div id="qi-m-demo"></div></div></div>
+</div>
+
+<!-- FLOORS -->
+<div class="page" id="page-floors">
+  <div class="card"><div class="ch" onclick="tc(this)"><div class="ci" style="background:#FAF5FF">🔲</div><div class="cinfo"><div class="ct">Flooring — All Areas</div><div class="cs">Enter sqft per material type</div></div><div class="cbadge bn" id="cb-fl-main">0/6</div><span class="chev o">▾</span></div><div class="cb o"><div id="qi-fl-main"></div></div></div>
+  <div class="card"><div class="ch" onclick="tc(this)"><div class="ci" style="background:var(--red-bg)">🔨</div><div class="cinfo"><div class="ct">Demo & Prep</div><div class="cs">Existing floor removal, subfloor</div></div><div class="cbadge bn" id="cb-fl-demo">0/3</div><span class="chev">▾</span></div><div class="cb"><div id="qi-fl-demo"></div></div></div>
+</div>
+
+<!-- WINDOWS -->
+<div class="page" id="page-windows">
+  <div class="card"><div class="ch" onclick="tc(this)"><div class="ci" style="background:var(--slate-bg)">🪟</div><div class="cinfo"><div class="ct">Impact Windows & Doors</div><div class="cs">South Florida hurricane code — count by type</div></div><div class="cbadge bn" id="cb-win-main">0/7</div><span class="chev o">▾</span></div><div class="cb o"><div id="qi-win-main"></div></div></div>
+</div>
+
+<!-- PAINT -->
+<div class="page" id="page-paint">
+  <div class="card"><div class="ch" onclick="tc(this)"><div class="ci" style="background:var(--sage-bg)">🖌</div><div class="cinfo"><div class="ct">Interior Paint</div><div class="cs">Rooms, ceilings, trim</div></div><div class="cbadge bn" id="cb-pt-int">0/4</div><span class="chev o">▾</span></div><div class="cb o"><div id="qi-pt-int"></div></div></div>
+  <div class="card"><div class="ch" onclick="tc(this)"><div class="ci" style="background:var(--sage-bg)">🏠</div><div class="cinfo"><div class="ct">Exterior Paint</div><div class="cs">House, trim, pressure wash</div></div><div class="cbadge bn" id="cb-pt-ext">0/3</div><span class="chev">▾</span></div><div class="cb"><div id="qi-pt-ext"></div></div></div>
+</div>
+
+<!-- CLOSET -->
+<div class="page" id="page-closet">
+  <div class="card"><div class="ch" onclick="tc(this)"><div class="ci" style="background:var(--slate-bg)">👔</div><div class="cinfo"><div class="ct">Closet System</div><div class="cs">Walk-in, reach-in, custom organizers</div></div><div class="cbadge bn" id="cb-cl-main">0/5</div><span class="chev o">▾</span></div><div class="cb o"><div id="qi-cl-main"></div></div></div>
+</div>
+
+<!-- PATIO -->
+<div class="page" id="page-patio">
+  <div class="card"><div class="ch" onclick="tc(this)"><div class="ci" style="background:var(--sage-bg)">🌿</div><div class="cinfo"><div class="ct">Outdoor / Patio</div><div class="cs">Pavers, pergola, screen, outdoor kitchen</div></div><div class="cbadge bn" id="cb-pa-main">0/6</div><span class="chev o">▾</span></div><div class="cb o"><div id="qi-pa-main"></div></div></div>
+</div>
+
+<!-- ADDITION -->
+<div class="page" id="page-addition">
+  <div class="card"><div class="ch" onclick="tc(this)"><div class="ci" style="background:var(--copper-bg)">🏡</div><div class="cinfo"><div class="ct">Home Addition</div><div class="cs">Room addition, sqft, permits</div></div><div class="cbadge bn" id="cb-ad-main">0/5</div><span class="chev o">▾</span></div><div class="cb o"><div id="qi-ad-main"></div></div></div>
+</div>
+
+<!-- FLOW -->
+<div class="page" id="page-flow">
+  <div class="phase"><div class="phn">1</div><div><div class="pht">Introduction — 5 min</div><div class="phs">Identify decision makers. Professional appearance. Break the ice.</div></div></div>
+  <div class="card"><div class="ch" onclick="tc(this)"><div class="ci" style="background:var(--slate-bg)">💬</div><div class="cinfo"><div class="ct">Opener Scripts</div></div><span class="chev">▾</span></div><div class="cb"><div class="scr"><div class="scrl">Opener</div><div class="scrt">"What bothers you most about this space right now? I want to understand what you're really after."</div></div><div class="scr"><div class="scrl">On financing</div><div class="scrt">"By the way — we offer 18 months zero-interest. I'll show you what that looks like later."</div></div></div></div>
+  <div class="phase" style="margin-top:16px;"><div class="phn">2</div><div><div class="pht">Measuring & Discovery — 20 min</div><div class="phs">Use Rendr for measurements. Photos + video for Gil.</div></div></div>
+  <div class="card"><div class="ch" onclick="tc(this)"><div class="ci" style="background:var(--copper-bg)">📐</div><div class="cinfo"><div class="ct">Rendr + Walkthrough</div><div class="cs">Measure, photograph, narrate out loud</div></div><span class="chev o">▾</span></div><div class="cb o"><div class="scr"><div class="scrl">While scanning with Rendr</div><div class="scrt">"I'm going to scan the space — it gives us exact dimensions for the design. You'll see the 3D rendering from this."</div></div><div class="scr"><div class="scrl">Counting slabs</div><div class="scrt">"You've got two here plus the island — three slabs total. That's my starting point for pricing."</div></div><div id="qi-flow-walkt"></div></div></div>
+  <div class="phase" style="margin-top:16px;"><div class="phn">3</div><div><div class="pht">Send to Gil — 5 min</div><div class="phs">Do this in front of the client. Shows professionalism.</div></div></div>
+  <div class="card"><div class="ch" onclick="tc(this)"><div class="ci" style="background:var(--sage-bg)">📤</div><div class="cinfo"><div class="ct">What to Send Gil</div></div><span class="chev o">▾</span></div><div class="cb o"><div id="qi-flow-send"></div><div class="scr" style="margin-top:11px;"><div class="scrl">Say while sending</div><div class="scrt">"Give me two minutes — I'm getting our owner looking at this right now. He responds fast."</div></div></div></div>
+  <div class="phase" style="margin-top:16px;"><div class="phn">4</div><div><div class="pht">Sit Down — Company Story — 20 min</div><div class="phs">Table conversation. Credentials. Show past work.</div></div></div>
+  <div class="card"><div class="ch" onclick="tc(this)"><div class="ci" style="background:var(--copper-bg)">🏛</div><div class="cinfo"><div class="ct">Bridge Scripts</div><div class="cs">While waiting for Gil's number</div></div><span class="chev">▾</span></div><div class="cb"><div class="scr"><div class="scrl">Company story</div><div class="scrt">"Gil founded Miami First over 35 years ago. Every project goes through him — that's why clients talk directly to the owner."</div></div><div class="scr"><div class="scrl">Show credentials</div><div class="scrt">"Here's our contractor license and insurance. A lot of people in South Florida don't ask — and that's how they get burned."</div></div><div class="scr"><div class="scrl">Kitchen anchor</div><div class="scrt">"For a kitchen like this in Miami, market runs $28K–$55K. Most clients in your situation land around $35–$45K."</div></div><div class="scr"><div class="scrl">Finance</div><div class="scrt">"With 18 months zero-interest, a $35K kitchen is about $1,944/month. Most people pay more on a car."</div></div></div></div>
+  <div class="phase" style="margin-top:16px;"><div class="phn">5</div><div><div class="pht">The Close</div><div class="phs">Present the price. Then stop talking.</div></div></div>
+  <div class="card"><div class="ch" onclick="tc(this)"><div class="ci" style="background:var(--copper-bg)">🤝</div><div class="cinfo"><div class="ct">Close Scripts</div></div><span class="chev">▾</span></div><div class="cb"><div class="scr"><div class="scrl">Present the price</div><div class="scrt">"Based on everything you showed me — we're at [X]. With financing that's [monthly]. Includes everything: demo, permits, all trades."</div></div><div class="scr"><div class="scrl">After price — STOP TALKING</div><div class="scrt">Silence. First one to speak loses. Wait.</div></div><div class="scr"><div class="scrl">If "too expensive"</div><div class="scrt">"Best I can do is move you to our Better package — same project, adjust finish level, land at [lower price]. I can make that work if we sign today."</div></div><div class="scr"><div class="scrl">Design deposit</div><div class="scrt">"$500 design deposit — 100% applied to your project. Gets our design team building your render this week."</div></div></div></div>
+</div>
+
+<!-- GIL — WHATSAPP TO OWNER -->
+<div class="page" id="page-report">
+  <div class="ewarn" style="background:var(--slate-bg);border-color:var(--slate-b);color:var(--slate);">📤 This goes to Gil — full scope so he can price it.</div>
+  <div class="rb"><div class="rt">Scope Summary for Gil</div><div id="rpt-content"><div style="color:var(--ink4);text-align:center;padding:20px 0;font-style:italic;font-size:14px;">Fill in client info and checklist first</div></div></div>
+  <div class="rb">
+    <div class="rt">Notes for Gil</div>
+    <textarea class="fi" id="ffn" placeholder="Structural concerns, client urgency, special requests for Gil…" style="min-height:75px;"></textarea>
+    <button class="cpbtn" onclick="copyGilReport()">📋 Copy — Send to Gil on WhatsApp</button>
+  </div>
+  <div class="rb"><button class="cpbtn danger" onclick="resetAll()">Clear Everything — New Visit</button></div>
+</div>
+
+<!-- PROPOSAL — CLIENT FACING -->
+<div class="page" id="page-proposal">
+  <!-- Header bar -->
+  <div style="background:var(--ink);border-radius:var(--r);padding:22px 20px;margin-bottom:16px;text-align:center;">
+    <div style="font-family:'Cormorant Garamond',serif;font-size:13px;font-weight:300;letter-spacing:0.2em;text-transform:uppercase;color:var(--copper);margin-bottom:4px;">Miami First Remodeling</div>
+    <div style="font-family:'Cormorant Garamond',serif;font-size:26px;font-weight:400;color:var(--white);letter-spacing:0.04em;">Your Project Estimate</div>
+    <div style="font-size:11px;color:rgba(247,245,240,0.45);margin-top:4px;letter-spacing:0.05em;" id="prop-date"></div>
+  </div>
+
+  <!-- Dear letter -->
+  <div class="rb">
+    <div id="prop-greeting" style="font-family:'Cormorant Garamond',serif;font-size:19px;font-weight:400;color:var(--ink);margin-bottom:10px;">Dear Valued Client,</div>
+    <div id="prop-intro" style="font-size:14px;color:var(--ink2);line-height:1.7;">Thank you for welcoming us into your home. Below is a summary of your project scope and our estimate, tailored to your vision and goals.</div>
+  </div>
+
+  <!-- Scope summary (no prices, no line items) -->
+  <div class="rb">
+    <div class="rt" style="margin-bottom:10px;">📋 Your Project Scope</div>
+    <div id="prop-scope"><div style="color:var(--ink4);font-style:italic;font-size:13px;">Fill in the checklist tabs first</div></div>
+  </div>
+
+  <!-- Investment tiers -->
+  <div class="rb">
+    <div class="rt" style="margin-bottom:4px;">💰 Your Investment Options</div>
+    <div style="font-size:12px;color:var(--ink4);margin-bottom:14px;">All prices include labor, materials, permits, demo, and full coordination.</div>
+    <div class="trow" id="prop-tiers">
+      <div class="tbox good"><div class="tlbl good">Good</div><div class="tprice good" id="pt-good">$—</div><div class="tmo" id="pt-good-mo">—/mo × 18</div></div>
+      <div class="tbox better"><div class="tlbl better">Better</div><div class="tprice better" id="pt-better">$—</div><div class="tmo" id="pt-better-mo">—/mo × 18</div></div>
+      <div class="tbox best"><div class="tlbl best">Best ★</div><div class="tprice best" id="pt-best">$—</div><div class="tmo" id="pt-best-mo">—/mo × 18</div></div>
+    </div>
+    <div style="font-size:11px;color:var(--ink4);text-align:center;">18 months — 0% interest financing available · 8.8% APR thereafter</div>
+  </div>
+
+  <!-- Discount / Incentives -->
+  <div class="rb" style="border:2px solid var(--copper-b);background:var(--copper-bg);">
+    <div style="font-family:'Cormorant Garamond',serif;font-size:18px;font-weight:500;color:var(--copper);margin-bottom:12px;">🎁 Special Incentives</div>
+
+    <!-- Discount toggle -->
+    <div style="margin-bottom:14px;">
+      <div class="flab" style="margin-bottom:8px;">Offer to include (select one or both)</div>
+      <div style="display:flex;flex-direction:column;gap:8px;">
+        <label style="display:flex;align-items:center;gap:10px;cursor:pointer;padding:11px 14px;background:white;border-radius:10px;border:1.5px solid var(--cream3);">
+          <input type="checkbox" id="disc-pct" onchange="updProposal()" style="width:18px;height:18px;accent-color:var(--copper);cursor:pointer;">
+          <div>
+            <div style="font-size:13px;font-weight:600;color:var(--ink);">Sign today — save 10%</div>
+            <div style="font-size:11px;color:var(--ink4);">Discount applied to your selected package</div>
+          </div>
+        </label>
+        <label style="display:flex;align-items:center;gap:10px;cursor:pointer;padding:11px 14px;background:white;border-radius:10px;border:1.5px solid var(--cream3);">
+          <input type="checkbox" id="disc-dep" onchange="updProposal()" style="width:18px;height:18px;accent-color:var(--copper);cursor:pointer;">
+          <div>
+            <div style="font-size:13px;font-weight:600;color:var(--ink);">$500 Design Deposit</div>
+            <div style="font-size:11px;color:var(--ink4);">100% applied to project · secures your spot this week</div>
+          </div>
+        </label>
+      </div>
+    </div>
+
+    <!-- Discounted prices display -->
+    <div id="disc-display" style="display:none;">
+      <div class="flab" style="margin-bottom:8px;color:var(--copper);">After discount</div>
+      <div class="trow">
+        <div class="tbox good"><div class="tlbl good">Good</div><div class="tprice good" id="pd-good" style="font-size:20px;">$—</div></div>
+        <div class="tbox better"><div class="tlbl better">Better</div><div class="tprice better" id="pd-better" style="font-size:20px;">$—</div></div>
+        <div class="tbox best"><div class="tlbl best">Best ★</div><div class="tprice best" id="pd-best" style="font-size:20px;">$—</div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Custom discount % editor -->
+  <div class="rb">
+    <div class="rt" style="font-size:15px;margin-bottom:10px;">Adjust Discount %</div>
+    <div class="mxr">
+      <div class="mxl">Same-day signing discount</div>
+      <input class="mxi" id="disc-val" type="number" value="10" min="0" max="30" step="1" oninput="updProposal()">
+      <div class="mxn">%</div>
+    </div>
+  </div>
+
+  <!-- Notes + closing -->
+  <div class="rb">
+    <div class="rt" style="font-size:15px;margin-bottom:10px;">Personalized Message</div>
+    <textarea class="fi" id="prop-notes" placeholder="Add a personal note to the client… e.g. 'It was great meeting you and seeing your vision for the space.'" style="min-height:80px;" oninput="updProposal()"></textarea>
+    <div style="margin-top:12px;padding:12px 14px;background:var(--cream);border-radius:10px;font-size:12px;color:var(--ink4);line-height:1.6;">
+      <strong style="color:var(--ink3);">CGC1530409</strong> · Miami First Remodeling Corporation · 29 S Federal Hwy Unit B, Dania Beach FL 33004<br>
+      This estimate is valid for 30 days · Financing subject to approval
+    </div>
+    <button class="cpbtn" onclick="copyProposal()" style="margin-top:10px;">📄 Copy Proposal — Send to Client</button>
+  </div>
+</div>
+
+<!-- ESTIMATE -->
+<div class="page" id="page-estimate">
+  <div class="ewarn">🔒 Internal only — do not show to client.</div>
+  <div class="card"><div class="ch" onclick="tc(this)"><div class="ci" style="background:var(--copper-bg)">📊</div><div class="cinfo"><div class="ct">Live Estimate</div><div class="cs">Updates from checklist quantities</div></div><span class="chev o">▾</span></div><div class="cb o"><div class="trow"><div class="tbox good"><div class="tlbl good">Good</div><div class="tprice good" id="tg">$0</div><div class="tmo" id="tgmo">—/mo</div><div class="tmg good" id="tgmg">55%</div></div><div class="tbox better"><div class="tlbl better">Better</div><div class="tprice better" id="tb">$0</div><div class="tmo" id="tbmo">—/mo</div><div class="tmg better" id="tbmg">62%</div></div><div class="tbox best"><div class="tlbl best">Best</div><div class="tprice best" id="tbs">$0</div><div class="tmo" id="tbsmo">—/mo</div><div class="tmg best" id="tbsmg">67%</div></div></div><div id="ebd"><div style="font-size:13px;color:var(--ink4);text-align:center;padding:8px 0;font-style:italic;">Add quantities to see breakdown</div></div></div></div>
+  <div class="card"><div class="ch" onclick="tc(this)"><div class="ci" style="background:var(--cream2)">⚙️</div><div class="cinfo"><div class="ct">Tier Multipliers</div><div class="cs">Good = floor — never go below</div></div><span class="chev">▾</span></div><div class="cb"><div class="mxr"><div class="mxl" style="color:var(--sage);font-weight:600;">Good — floor</div><input class="mxi" id="mxg" type="number" value="2.22" step="0.01" oninput="updEst()"><div class="mxn" id="mxng" style="color:var(--sage);">55%</div></div><div class="mxr"><div class="mxl" style="color:var(--slate);font-weight:600;">Better</div><input class="mxi" id="mxbt" type="number" value="2.6" step="0.01" oninput="updEst()"><div class="mxn" id="mxnbt" style="color:var(--slate);">62%</div></div><div class="mxr"><div class="mxl" style="color:var(--copper);font-weight:600;">Best — always start here</div><input class="mxi" id="mxbs" type="number" value="3.0" step="0.01" oninput="updEst()"><div class="mxn" id="mxnbs" style="color:var(--copper);">67%</div></div></div></div>
+  <div class="card"><div class="ch" onclick="tc(this)"><div class="ci" style="background:var(--cream2)">✏️</div><div class="cinfo"><div class="ct">Edit Unit Costs</div><div class="cs">Gil's internal cost per item</div></div><span class="chev">▾</span></div><div class="cb"><div id="cost-editor"></div></div></div>
+</div>
+
+</div><!-- /main -->
+<div class="bnav"><button class="nbtn nback" onclick="prevPg()">← Back</button><button class="nbtn nnext" onclick="nextPg()">Next →</button></div>
+<div class="toast" id="toast">Copied!</div>
+<script>
+const COSTS={
+  'cab-base':{label:'Base cabinet box',cost:180},'cab-upper':{label:'Upper cabinet box',cost:140},
+  'cab-pantry':{label:'Pantry / tall box',cost:320},'cab-island':{label:'Island cabinet box',cost:200},
+  'cab-vanity':{label:'Vanity cabinet box',cost:160},'slab-std':{label:'Quartz slab standard',cost:650},
+  'slab-prem':{label:'Quartz slab premium',cost:950},'slab-granite':{label:'Granite slab',cost:580},
+  'slab-marble':{label:'Marble / Quartzite slab',cost:1100},'waterfall':{label:'Waterfall edge (side)',cost:420},
+  'demo-kitchen':{label:'Kitchen demo',cost:1800},'demo-bath':{label:'Bathroom demo',cost:1200},
+  'paint-k':{label:'Kitchen paint',cost:1200},'paint-b':{label:'Bathroom paint',cost:650},
+  'paint-room':{label:'Interior room paint',cost:450},'paint-ext':{label:'Exterior paint per 100sqft',cost:80},
+  'sink-swap':{label:'Sink swap same location',cost:280},'sink-move':{label:'Sink relocation',cost:1200},
+  'dw':{label:'Dishwasher install',cost:220},'gas-line':{label:'Gas line for range',cost:800},
+  'pot-filler':{label:'Pot filler',cost:950},'led-lf':{label:'Under-cab LED per LF',cost:45},
+  'recess':{label:'Recessed light each',cost:120},'hood':{label:'Range hood install',cost:650},
+  'gfci':{label:'GFCI outlet each',cost:85},'shower-slab':{label:'Shower wall slab',cost:580},
+  'pan-custom':{label:'Custom tile shower pan',cost:950},'pan-prefab':{label:'Prefab shower pan',cost:380},
+  'glass-frame':{label:'Frameless glass enclosure',cost:1800},'glass-semi':{label:'Semi-frameless glass',cost:1100},
+  'tub-convert':{label:'Tub-to-shower conversion',cost:2800},'tub-fs':{label:'Freestanding soaking tub',cost:1800},
+  'toilet-swap':{label:'Toilet swap same location',cost:240},'toilet-move':{label:'Toilet relocation',cost:1400},
+  'bidet':{label:'Bidet seat',cost:180},'heated-50':{label:'Heated floor per 50sqft',cost:680},
+  'exhaust':{label:'Exhaust fan upgrade',cost:180},'led-mirror':{label:'LED backlit mirror',cost:320},
+  'tile-std':{label:'Standard tile per sqft',cost:6},'tile-large':{label:'Large format tile sqft',cost:11},
+  'tile-demo':{label:'Tile demo per sqft',cost:2.5},'floor-lvp':{label:'LVP flooring sqft',cost:5},
+  'floor-hw':{label:'Engineered hardwood sqft',cost:9},'win-small':{label:'Impact window small',cost:420},
+  'win-med':{label:'Impact window medium',cost:680},'win-large':{label:'Impact window large',cost:950},
+  'win-slide6':{label:'Impact sliding door 6ft',cost:1800},'win-slide12':{label:'Impact sliding door 12ft',cost:3200},
+  'win-entry':{label:'Impact entry door',cost:1600},'closet-lf':{label:'Closet system per LF',cost:280},
+  'pavers-sqft':{label:'Pavers installed sqft',cost:18},'pergola':{label:'Pergola structure',cost:8500},
+  'screen-sqft':{label:'Screen enclosure sqft',cost:12},'add-sqft':{label:'Addition per sqft',cost:180},
+};
+
+const G={
+  'k-slabs':{items:[
+    {id:'ks1',q:'Countertop slabs — main run',hint:'Count every separate counter section',type:'qty',unit:'slabs',costKey:'slab-std',tag:'price'},
+    {id:'ks2',q:'Island present?',hint:'Island adds 1–2 extra slabs',type:'yesqty',unit:'island slabs',costKey:'slab-std',tag:'price'},
+    {id:'ks3',q:'Waterfall edge?',hint:'Stone wraps over edge — premium upsell',type:'yesqty',unit:'sides',costKey:'waterfall',tag:'upsell'},
+    {id:'ks4',q:'Countertop material',type:'options',opts:['Quartz Standard','Quartz Premium','Granite','Marble / Quartzite']},
+    {id:'ks5',q:'Backsplash',type:'options',opts:['Same slab','Tile','Paint','None / Keep existing']},
+  ]},
+  'k-cabs':{items:[
+    {id:'kc1',q:'Base cabinet boxes',hint:'Each unit = 1 box — 2 or 3 drawers = still 1',type:'qty',unit:'boxes',costKey:'cab-base',tag:'price'},
+    {id:'kc2',q:'Upper cabinet boxes',hint:'Each upper unit = 1 box',type:'qty',unit:'boxes',costKey:'cab-upper',tag:'price'},
+    {id:'kc3',q:'Pantry / tall boxes',hint:'84"–96" tall units',type:'qty',unit:'boxes',costKey:'cab-pantry'},
+    {id:'kc4',q:'Island cabinet boxes',hint:'Count both sides',type:'qty',unit:'boxes',costKey:'cab-island'},
+    {id:'kc5',q:'Cabinet style',type:'options',opts:['Shaker','Flat / Slab','European','Raised Panel']},
+    {id:'kc6',q:'Water damage or mold on existing?',hint:'If yes — full replacement, flag Gil',type:'yesno',tag:'alert'},
+  ]},
+  'k-demo':{items:[
+    {id:'kd1',q:'Full kitchen gut to studs?',type:'yesno',costKey:'demo-kitchen',tag:'price'},
+    {id:'kd2',q:'Wall removal for open plan?',hint:'Check if load-bearing — flag for Gil',type:'yesno',tag:'alert'},
+    {id:'kd3',q:'Paint walls & ceiling?',type:'yesno',costKey:'paint-k'},
+  ]},
+  'k-plumb':{items:[
+    {id:'kp1',q:'Sink — same location?',type:'yesno',costKey:'sink-swap'},
+    {id:'kp2',q:'Sink — moving to new location?',hint:'New rough-in — significant cost',type:'yesno',costKey:'sink-move',tag:'price'},
+    {id:'kp3',q:'Dishwasher?',type:'yesno',costKey:'dw'},
+    {id:'kp4',q:'Gas line for range?',hint:'Requires licensed plumber',type:'yesno',costKey:'gas-line',tag:'alert'},
+    {id:'kp5',q:'Pot filler above range?',type:'yesno',costKey:'pot-filler',tag:'upsell'},
+  ]},
+  'k-elec':{items:[
+    {id:'ke1',q:'Under-cabinet LED lighting?',hint:'Per linear foot',type:'yesqty',unit:'linear feet',costKey:'led-lf',tag:'upsell'},
+    {id:'ke2',q:'Recessed lights in ceiling?',type:'qty',unit:'lights',costKey:'recess'},
+    {id:'ke3',q:'Range hood type',type:'options',opts:['Ducted','Ductless','Existing / None']},
+    {id:'ke4',q:'GFCI outlets needed?',hint:'Code: every 4ft on countertop',type:'qty',unit:'outlets',costKey:'gfci',tag:'alert'},
+  ]},
+  'k-floor':{items:[
+    {id:'kfl1',q:'Replacing kitchen floor?',hint:'Skip if keeping existing',type:'yesno'},
+    {id:'kfl2',q:'Floor material',type:'options',opts:['Porcelain tile','Large format tile','LVP','Engineered hardwood','Match existing']},
+    {id:'kfl3',q:'Floor area',type:'qty',unit:'sqft',costKey:'tile-std',tag:'price'},
+  ]},
+  'b-shower':{items:[
+    {id:'bs0',q:'Current setup',type:'options',opts:['Tub only','Shower only','Tub + Shower combo']},
+    {id:'bs1',q:'Tub-to-shower conversion?',hint:'Demo tub, build walk-in',type:'yesno',costKey:'tub-convert',tag:'upsell'},
+    {id:'bs2',q:'Shower wall slabs?',hint:'Typically 3–5 slabs',type:'qty',unit:'slabs',costKey:'shower-slab',tag:'price'},
+    {id:'bs3',q:'Shower pan type',type:'options',opts:['Custom tile pan','Prefab pan','Existing / N/A']},
+    {id:'bs4',q:'Glass enclosure type',type:'options',opts:['Frameless','Semi-frameless','Framed','None / Open']},
+    {id:'bs5',q:'Curbless / zero-entry?',hint:'ADA-friendly, modern',type:'yesno',tag:'upsell'},
+    {id:'bs6',q:'Shower niche / built-in shelf?',type:'yesqty',unit:'niches',tag:'upsell'},
+  ]},
+  'b-vanity':{items:[
+    {id:'bv1',q:'Single or double vanity?',type:'options',opts:['Single','Double']},
+    {id:'bv2',q:'Vanity cabinet boxes',hint:'Each unit = 1 box',type:'qty',unit:'boxes',costKey:'cab-vanity',tag:'price'},
+    {id:'bv3',q:'Vanity countertop slabs',type:'qty',unit:'slabs',costKey:'slab-std',tag:'price'},
+    {id:'bv4',q:'Floating (wall-mounted) vanity?',type:'yesno',tag:'upsell'},
+    {id:'bv5',q:'LED backlit mirror?',type:'yesqty',unit:'mirrors',costKey:'led-mirror',tag:'upsell'},
+  ]},
+  'b-plumb':{items:[
+    {id:'bp1',q:'Toilet — same location?',type:'yesno',costKey:'toilet-swap'},
+    {id:'bp2',q:'Toilet — moving?',hint:'Under-slab rough-in',type:'yesno',costKey:'toilet-move',tag:'price'},
+    {id:'bp3',q:'Bidet seat?',type:'yesno',costKey:'bidet',tag:'upsell'},
+    {id:'bp4',q:'Heated floor?',type:'yesqty',unit:'× 50 sqft',costKey:'heated-50',tag:'upsell'},
+    {id:'bp5',q:'Exhaust fan upgrade?',type:'yesno',costKey:'exhaust'},
+  ]},
+  'b-tile':{items:[
+    {id:'bt1',q:'Shower wall tile',type:'qty',unit:'sqft',costKey:'tile-std',tag:'price'},
+    {id:'bt2',q:'Bathroom floor tile',type:'qty',unit:'sqft',costKey:'tile-std',tag:'price'},
+    {id:'bt3',q:'Tile format',type:'options',opts:['Standard ≤12×24','Large 24×24','Extra Large 24×48+','Mix / TBD']},
+  ]},
+  'b-demo':{items:[
+    {id:'bd1',q:'Full bathroom gut to studs?',type:'yesno',costKey:'demo-bath',tag:'price'},
+    {id:'bd2',q:'Paint walls & ceiling?',type:'yesno',costKey:'paint-b'},
+  ]},
+  'm-shower':{items:[
+    {id:'ms1',q:'Walk-in shower — wall slabs',hint:'Master typically 5–7 slabs',type:'qty',unit:'slabs',costKey:'shower-slab',tag:'price'},
+    {id:'ms2',q:'Shower pan type',type:'options',opts:['Custom tile pan','Prefab pan']},
+    {id:'ms3',q:'Glass enclosure',type:'options',opts:['Frameless','Semi-frameless','None / Open']},
+    {id:'ms4',q:'Curbless / zero-entry?',type:'yesno',tag:'upsell'},
+    {id:'ms5',q:'Steam shower?',hint:'Sealed enclosure + steam generator',type:'yesno',tag:'upsell'},
+    {id:'ms6',q:'Rainfall showerhead + body jets?',type:'yesno',tag:'upsell'},
+    {id:'ms7',q:'Shower niche / shelf?',type:'yesqty',unit:'niches',tag:'upsell'},
+  ]},
+  'm-tub':{items:[
+    {id:'mt1',q:'Freestanding soaking tub?',type:'yesno',costKey:'tub-fs',tag:'upsell'},
+    {id:'mt2',q:'Floor-mount tub filler?',hint:'Statement faucet for freestanding',type:'yesno',tag:'upsell'},
+    {id:'mt3',q:'Tub surround slab?',type:'yesqty',unit:'slabs',costKey:'slab-std',tag:'price'},
+  ]},
+  'm-vanity':{items:[
+    {id:'mv1',q:'Vanity cabinet boxes',hint:'Double vanity — count each unit',type:'qty',unit:'boxes',costKey:'cab-vanity',tag:'price'},
+    {id:'mv2',q:'Vanity countertop slabs',hint:'Usually 1–2 for double vanity',type:'qty',unit:'slabs',costKey:'slab-std',tag:'price'},
+    {id:'mv3',q:'Floating vanity?',type:'yesno',tag:'upsell'},
+    {id:'mv4',q:'LED backlit mirrors?',type:'yesqty',unit:'mirrors',costKey:'led-mirror',tag:'upsell'},
+    {id:'mv5',q:'Linen tower / extra storage?',type:'yesno',tag:'upsell'},
+  ]},
+  'm-plumb':{items:[
+    {id:'mp1',q:'Toilet — same location?',type:'yesno',costKey:'toilet-swap'},
+    {id:'mp2',q:'Toilet — moving?',type:'yesno',costKey:'toilet-move',tag:'price'},
+    {id:'mp3',q:'Bidet?',type:'yesno',costKey:'bidet',tag:'upsell'},
+    {id:'mp4',q:'Heated floor?',type:'yesqty',unit:'× 50 sqft',costKey:'heated-50',tag:'upsell'},
+    {id:'mp5',q:'Exhaust fan upgrade?',type:'yesno',costKey:'exhaust'},
+  ]},
+  'm-tile':{items:[
+    {id:'mt_1',q:'Shower tile (sqft)',type:'qty',unit:'sqft',costKey:'tile-large',tag:'price'},
+    {id:'mt_2',q:'Floor tile (sqft)',type:'qty',unit:'sqft',costKey:'tile-large',tag:'price'},
+    {id:'mt_3',q:'Tile format',type:'options',opts:['Large 24×24','Extra Large 24×48+','Herringbone / Pattern','Mix / TBD']},
+  ]},
+  'm-demo':{items:[
+    {id:'md1',q:'Full master bath gut to studs?',type:'yesno',costKey:'demo-bath',tag:'price'},
+    {id:'md2',q:'Paint walls & ceiling?',type:'yesno',costKey:'paint-b'},
+  ]},
+  'fl-main':{items:[
+    {id:'fl1',q:'Porcelain tile (sqft)',type:'qty',unit:'sqft',costKey:'tile-std',tag:'price'},
+    {id:'fl2',q:'Large format porcelain (sqft)',type:'qty',unit:'sqft',costKey:'tile-large',tag:'price'},
+    {id:'fl3',q:'LVP — Luxury Vinyl Plank (sqft)',type:'qty',unit:'sqft',costKey:'floor-lvp',tag:'price'},
+    {id:'fl4',q:'Engineered hardwood (sqft)',type:'qty',unit:'sqft',costKey:'floor-hw',tag:'price'},
+    {id:'fl5',q:'Match existing floors elsewhere?',hint:'Adds complexity + cost',type:'yesno',tag:'alert'},
+    {id:'fl6',q:'Transitions / thresholds?',type:'yesqty',unit:'transitions'},
+  ]},
+  'fl-demo':{items:[
+    {id:'fld1',q:'Floor demo / haul-away (sqft)',type:'qty',unit:'sqft',costKey:'tile-demo',tag:'price'},
+    {id:'fld2',q:'Subfloor — any soft spots?',hint:'Soft = rot, must fix before new floor',type:'yesno',tag:'alert'},
+    {id:'fld3',q:'Self-leveling compound needed?',hint:'If subfloor uneven — required for tile',type:'yesno',tag:'alert'},
+  ]},
+  'win-main':{items:[
+    {id:'wn1',q:'Small impact windows (<15 sqft)',hint:'Bedrooms, bathrooms',type:'qty',unit:'windows',costKey:'win-small',tag:'price'},
+    {id:'wn2',q:'Medium impact windows (15–30 sqft)',hint:'Living room, standard size',type:'qty',unit:'windows',costKey:'win-med',tag:'price'},
+    {id:'wn3',q:'Large impact windows (30–50 sqft)',type:'qty',unit:'windows',costKey:'win-large',tag:'price'},
+    {id:'wn4',q:'Impact sliding doors — 6ft',type:'qty',unit:'doors',costKey:'win-slide6',tag:'price'},
+    {id:'wn5',q:'Impact sliding doors — 12ft',type:'qty',unit:'doors',costKey:'win-slide12',tag:'upsell'},
+    {id:'wn6',q:'Impact entry door?',type:'yesno',costKey:'win-entry',tag:'upsell'},
+    {id:'wn7',q:'HOA approval needed?',hint:'Condos may have window specs',type:'yesno',tag:'alert'},
+  ]},
+  'pt-int':{items:[
+    {id:'pi1',q:'Number of rooms to paint',hint:'Bedrooms, living, dining, halls',type:'qty',unit:'rooms',costKey:'paint-room',tag:'price'},
+    {id:'pi2',q:'Ceilings included?',type:'yesno'},
+    {id:'pi3',q:'Trim / baseboards / doors?',type:'yesno'},
+    {id:'pi4',q:'Color consultation needed?',type:'yesno',tag:'upsell'},
+  ]},
+  'pt-ext':{items:[
+    {id:'pe1',q:'Exterior sqft (approx)',hint:'All exterior walls',type:'qty',unit:'sqft',costKey:'paint-ext',tag:'price'},
+    {id:'pe2',q:'Pressure wash first?',type:'yesno'},
+    {id:'pe3',q:'Trim / shutters / garage door?',type:'yesno'},
+  ]},
+  'cl-main':{items:[
+    {id:'cl1',q:'Walk-in or reach-in?',type:'options',opts:['Walk-in','Reach-in','Both']},
+    {id:'cl2',q:'Total linear feet of closet',type:'qty',unit:'linear feet',costKey:'closet-lf',tag:'price'},
+    {id:'cl3',q:'Custom or standard system?',type:'options',opts:['Custom built-in','Standard modular']},
+    {id:'cl4',q:'Island / center bench?',type:'yesno',tag:'upsell'},
+    {id:'cl5',q:'Lighting inside closet?',type:'yesno',tag:'upsell'},
+  ]},
+  'pa-main':{items:[
+    {id:'pa1',q:'Pavers / hardscape (sqft)',type:'qty',unit:'sqft',costKey:'pavers-sqft',tag:'price'},
+    {id:'pa2',q:'Pergola / shade structure?',type:'yesno',costKey:'pergola',tag:'upsell'},
+    {id:'pa3',q:'Screen enclosure?',type:'yesqty',unit:'sqft',costKey:'screen-sqft',tag:'price'},
+    {id:'pa4',q:'Outdoor kitchen?',type:'yesno',tag:'upsell'},
+    {id:'pa5',q:'Landscaping / planting?',type:'yesno',tag:'upsell'},
+    {id:'pa6',q:'Drainage / waterproofing issues?',type:'yesno',tag:'alert'},
+  ]},
+  'ad-main':{items:[
+    {id:'ad1',q:'Addition type',type:'options',opts:['Bedroom','Bathroom','Garage','Family room','In-law suite','Other']},
+    {id:'ad2',q:'Approximate square footage',type:'qty',unit:'sqft',costKey:'add-sqft',tag:'price'},
+    {id:'ad3',q:'Permits required?',hint:'Yes — all additions require permits',type:'yesno',tag:'alert'},
+    {id:'ad4',q:'AC / HVAC extension needed?',type:'yesno',tag:'price'},
+    {id:'ad5',q:'Matching exterior finish?',type:'yesno',tag:'alert'},
+  ]},
+  'flow-walkt':{items:[
+    {id:'fw1',q:'Measured space with Rendr',type:'flow'},
+    {id:'fw2',q:'Photos taken — all angles',type:'flow'},
+    {id:'fw3',q:'Video walkthrough recorded with narration',type:'flow'},
+    {id:'fw4',q:'Slab count confirmed and noted',type:'flow'},
+    {id:'fw5',q:'Structural concerns identified',type:'flow'},
+  ]},
+  'flow-send':{items:[
+    {id:'fs1',q:'Photos sent to Gil on WhatsApp',type:'flow'},
+    {id:'fs2',q:'Video sent to Gil',type:'flow'},
+    {id:'fs3',q:"Voice note explaining client's main wish",type:'flow'},
+    {id:'fs4',q:'Slab count + scope in message',type:'flow'},
+    {id:'fs5',q:'Gil has responded with a number',type:'flow'},
+  ]},
+};
+
+const SCOPE_ORDER=['kitchen','bathroom','master','floors','windows','paint','closet','patio','addition'];
+const SCOPE_LBL={kitchen:'Kitchen',bathroom:'Bathroom',master:'Master Bath',floors:'Floors',windows:'Windows',paint:'Paint',closet:'Closet',patio:'Patio',addition:'Addition'};
+const SCOPE_GRP={
+  kitchen:['k-slabs','k-cabs','k-demo','k-plumb','k-elec','k-floor'],
+  bathroom:['b-shower','b-vanity','b-plumb','b-tile','b-demo'],
+  master:['m-shower','m-tub','m-vanity','m-plumb','m-tile','m-demo'],
+  floors:['fl-main','fl-demo'],
+  windows:['win-main'],
+  paint:['pt-int','pt-ext'],
+  closet:['cl-main'],
+  patio:['pa-main'],
+  addition:['ad-main'],
+};
+
+const S={page:'client',pages:['client','flow','report','proposal','estimate'],scope:[],a:{},leg:null};
+const ga=id=>S.a[id]||{};
+const sa=(id,p)=>{S.a[id]=Object.assign({},ga(id),p);};
+
+function answered(id,type){
+  const a=ga(id);
+  if(type==='flow')return!!a.ans;
+  if(type==='qty')return(a.qty||0)>0;
+  if(type==='yesno'||type==='yesqty')return a.ans==='yes'||a.ans==='no';
+  if(type==='options')return!!a.ans;
+  return false;
+}
+
+function getActiveScopePages(){
+  if(S.scope.includes('fullhome'))return SCOPE_ORDER;
+  return SCOPE_ORDER.filter(s=>S.scope.includes(s));
+}
+function buildPages(){S.pages=['client',...getActiveScopePages(),'flow','report','proposal','estimate'];}
+
+function renderTabs(){
+  buildPages();
+  const ALL={client:'Client',flow:'Flow',report:'→ Gil',proposal:'Proposal',estimate:'$',...SCOPE_LBL};
+  document.getElementById('tbar').innerHTML=S.pages.map(p=>{
+    const a=S.page===p;
+    const cl=['ti',a?'active':'',p==='estimate'?'int':''].filter(Boolean).join(' ');
+    return `<button class="${cl}" onclick="showPg('${p}')">${ALL[p]||p}</button>`;
+  }).join('');
+}
+
+function tog(btn,key){
+  if(key==='fullhome'){
+    const on=btn.classList.toggle('on');
+    document.querySelectorAll('.sp').forEach(b=>on?b.classList.add('on'):b.classList.remove('on'));
+    S.scope=on?['fullhome',...SCOPE_ORDER]:[];
+  } else {
+    btn.classList.toggle('on');
+    if(S.scope.includes(key))S.scope=S.scope.filter(s=>s!==key);
+    else S.scope.push(key);
+    document.querySelectorAll('.sp').forEach(b=>{if(b.textContent.includes('Full Home'))b.classList.remove('on');});
+    S.scope=S.scope.filter(s=>s!=='fullhome');
+  }
+  renderTabs(); updateProgress();
+}
+
+function setLeg(n){
+  S.leg=n;
+  document.getElementById('leg2').className='lbadge'+(n===2?' two':'');
+  document.getElementById('leg1').className='lbadge'+(n===1?' one':'');
+  document.getElementById('miss-wrap').style.display=n===1?'block':'none';
+}
+
+function fmtBudget(inp){
+  let v=inp.value.replace(/[^0-9]/g,'');
+  if(v)inp.value='$'+parseInt(v,10).toLocaleString();
+  else inp.value='';
+}
+
+function renderGrp(gk){
+  const grp=G[gk]; if(!grp)return;
+  const el=document.getElementById('qi-'+gk); if(!el)return;
+  el.innerHTML='';
+  grp.items.forEach(item=>{
+    const d=document.createElement('div');
+    d.className='qi'; d.id='qiw-'+item.id;
+    d.innerHTML=buildQI(item);
+    el.appendChild(d);
+  });
+  updBadge(gk); updateProgress();
+}
+
+function buildQI(item){
+  const a=ga(item.id),done=answered(item.id,item.type);
+  let badge='';
+  if(done){
+    if(item.type==='qty')badge=`${a.qty} ${item.unit||''}`;
+    else if(item.type==='yesno')badge=a.ans.toUpperCase();
+    else if(item.type==='yesqty')badge=a.ans==='yes'?`YES · ${a.followQty||0} ${item.unit||''}`:'NO';
+    else if(item.type==='options')badge=a.ans;
+    else if(item.type==='flow')badge='✓';
+  }
+  const gk=findGrp(item.id);
+  let h=`<div class="qrow"><div class="ql"><div class="qq${done?' ans':''}">${eh(item.q)}`;
+  if(done&&badge)h+=`<span class="qp">${eh(badge)}</span>`;
+  h+=`</div>`;
+  if(item.hint)h+=`<div class="qh">${eh(item.hint)}</div>`;
+  if(item.tag)h+=`<span class="qtag t${item.tag[0]}">${item.tag==='price'?'Pricing impact':item.tag==='upsell'?'Upsell':'Flag'}</span>`;
+  h+=`</div>`;
+  if(item.type==='flow'){
+    h+=`<button class="fchk${a.ans?' on':''}" onclick="doFlow('${item.id}','${gk}')"></button>`;
+  } else if(item.type==='qty'){
+    const v=a.qty||0;
+    h+=`<div class="stpr"><button class="sbtn" onclick="doAdj('${item.id}','${gk}',-1)">−</button><div class="sval${v===0?' z':''}">${v}</div><button class="sbtn" onclick="doAdj('${item.id}','${gk}',1)">+</button></div>`;
+  } else if(item.type==='yesno'||item.type==='yesqty'){
+    h+=`<div class="yn"><button class="ynb y${a.ans==='yes'?' on':''}" onclick="doYN('${item.id}','yes','${gk}')">Yes</button><button class="ynb n${a.ans==='no'?' on':''}" onclick="doYN('${item.id}','no','${gk}')">No</button></div>`;
+  }
+  h+=`</div>`;
+  if(item.type==='options'){
+    h+=`<div class="opts">`;
+    item.opts.forEach(o=>{ h+=`<button class="opt${a.ans===o?' on':''}" onclick="doOpt('${item.id}','${gk}','${o.replace(/'/g,"\\'")}'")">${eh(o)}</button>`; });
+    h+=`</div>`;
+  }
+  if(item.type==='yesqty'&&a.ans==='yes'){
+    const fv=a.followQty||0;
+    h+=`<div class="fup"><div class="fupl">How many ${eh(item.unit||'units')}?</div><div class="stpr"><button class="sbtn" onclick="doFol('${item.id}','${gk}',-1)">−</button><div class="sval${fv===0?' z':''}">${fv}</div><button class="sbtn" onclick="doFol('${item.id}','${gk}',1)">+</button></div></div>`;
+  }
+  return h;
+}
+
+function eh(s){return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
+function findGrp(id){for(const k in G)if(G[k].items.find(i=>i.id===id))return k;return'';}
+
+function doYN(id,val,gk){const c=ga(id).ans;sa(id,{ans:c===val?null:val});renderGrp(gk);updEst();}
+function doAdj(id,gk,d){sa(id,{qty:Math.max(0,(ga(id).qty||0)+d)});renderGrp(gk);updEst();}
+function doFol(id,gk,d){sa(id,{followQty:Math.max(0,(ga(id).followQty||0)+d)});renderGrp(gk);updEst();}
+function doOpt(id,gk,val){sa(id,{ans:ga(id).ans===val?null:val});renderGrp(gk);}
+function doFlow(id,gk){sa(id,{ans:ga(id).ans?null:'done'});renderGrp(gk);updateProgress();}
+
+function updBadge(gk){
+  const grp=G[gk];if(!grp)return;
+  const done=grp.items.filter(i=>answered(i.id,i.type)).length;
+  const el=document.getElementById('cb-'+gk);if(!el)return;
+  el.textContent=done+'/'+grp.items.length;
+  el.className='cbadge '+(done===grp.items.length?'bd':'bn');
+}
+
+function updateProgress(){
+  const grps=['flow-walkt','flow-send'];
+  getActiveScopePages().forEach(s=>(SCOPE_GRP[s]||[]).forEach(g=>grps.push(g)));
+  const all=[...new Set(grps)].flatMap(g=>(G[g]||{items:[]}).items);
+  const done=all.filter(i=>answered(i.id,i.type)).length;
+  const pct=all.length?Math.round(done/all.length*100):0;
+  document.getElementById('pf').style.width=pct+'%';
+  document.getElementById('ppct').textContent=pct+'%';
+}
+
+function getCost(k){const e=document.getElementById('cost-'+k);return e?(parseFloat(e.value)||0):(COSTS[k]?.cost||0);}
+function getMx(){return{good:parseFloat(document.getElementById('mxg')?.value)||2.22,better:parseFloat(document.getElementById('mxbt')?.value)||2.6,best:parseFloat(document.getElementById('mxbs')?.value)||3.0};}
+function toMg(m){return Math.round((1-1/m)*100)+'%';}
+function fmtFull(n){return'$'+Math.round(n).toLocaleString();}
+function fmtK(n){if(n===0)return'$0';if(n>=1000)return'$'+(n/1000).toFixed(0)+'K';return fmtFull(n);}
+
+function calcCost(){
+  let total=0;const bd={};
+  function add(lbl,key,qty){const c=getCost(key);if(!c||!qty)return;const sub=c*qty;bd[lbl]=(bd[lbl]||0)+sub;total+=sub;}
+  Object.values(G).forEach(grp=>grp.items.forEach(item=>{
+    if(!item.costKey)return;
+    const a=ga(item.id),lbl=COSTS[item.costKey]?.label||item.costKey;
+    if(item.type==='qty'&&(a.qty||0)>0)add(lbl,item.costKey,a.qty);
+    if(item.type==='yesno'&&a.ans==='yes')add(lbl,item.costKey,1);
+    if(item.type==='yesqty'&&a.ans==='yes'&&(a.followQty||0)>0)add(lbl,item.costKey,a.followQty);
+  }));
+  return{total,bd};
+}
+
+function updEst(){
+  const{total,bd}=calcCost(),mx=getMx();
+  const good=total*mx.good,better=total*mx.better,best=total*mx.best;
+  const s=(id,v)=>{const e=document.getElementById(id);if(e)e.textContent=v;};
+  s('tg',fmtFull(good));s('tb',fmtFull(better));s('tbs',fmtFull(best));
+  s('tgmo',fmtK(good/18)+'/mo');s('tbmo',fmtK(better/18)+'/mo');s('tbsmo',fmtK(best/18)+'/mo');
+  s('tgmg',toMg(mx.good)+' margin');s('tbmg',toMg(mx.better)+' margin');s('tbsmg',toMg(mx.best)+' margin');
+  s('mxng',toMg(mx.good)+' margin');s('mxnbt',toMg(mx.better)+' margin');s('mxnbs',toMg(mx.best)+' margin');
+  const bdEl=document.getElementById('ebd');
+  if(bdEl){
+    if(!Object.keys(bd).length){bdEl.innerHTML='<div style="font-size:13px;color:var(--ink4);text-align:center;padding:8px 0;font-style:italic;">Add quantities to see breakdown</div>';}
+    else{let h='';Object.keys(bd).forEach(l=>{h+=`<div class="bdi"><span class="bdk">${eh(l)}</span><span class="bdv">${fmtFull(bd[l])}</span></div>`;});h+=`<div class="bdt"><span class="bdk">Total internal cost</span><span class="bdv">${fmtFull(total)}</span></div>`;bdEl.innerHTML=h;}
+  }
+}
+
+function renderCostEditor(){
+  const el=document.getElementById('cost-editor');if(!el)return;
+  el.innerHTML='';
+  // Group definitions for cost editor display
+  const CAT_GROUPS=[
+    {label:'Kitchen — Cabinets',       keys:['cab-base','cab-upper','cab-pantry','cab-island']},
+    {label:'Kitchen — Countertops',    keys:['slab-std','slab-prem','slab-granite','slab-marble','waterfall']},
+    {label:'Kitchen — Demo & Labor',   keys:['demo-kitchen','paint-k']},
+    {label:'Kitchen — Plumbing',       keys:['sink-swap','sink-move','dw','gas-line','pot-filler']},
+    {label:'Kitchen — Electrical',     keys:['led-lf','recess','hood','gfci']},
+    {label:'Bathroom — Shower',        keys:['shower-slab','pan-custom','pan-prefab','glass-frame','glass-semi','tub-convert','tub-fs']},
+    {label:'Bathroom — Vanity',        keys:['cab-vanity','led-mirror']},
+    {label:'Bathroom — Plumbing',      keys:['toilet-swap','toilet-move','bidet','heated-50','exhaust']},
+    {label:'Bathroom — Tile',          keys:['tile-std','tile-large']},
+    {label:'Bathroom — Demo',          keys:['demo-bath','paint-b']},
+    {label:'Flooring',                 keys:['floor-lvp','floor-hw','tile-demo']},
+    {label:'Windows & Doors',          keys:['win-small','win-med','win-large','win-slide6','win-slide12','win-entry']},
+    {label:'Paint',                    keys:['paint-room','paint-ext']},
+    {label:'Closet',                   keys:['closet-lf']},
+    {label:'Patio / Outdoor',          keys:['pavers-sqft','pergola','screen-sqft']},
+    {label:'Addition',                 keys:['add-sqft']},
+  ];
+  // Collect all cost keys that are actually used (answered > 0)
+  const usedKeys=new Set();
+  Object.values(G).forEach(grp=>grp.items.forEach(item=>{
+    if(!item.costKey)return;
+    const a=ga(item.id);
+    if(item.type==='qty'&&(a.qty||0)>0)usedKeys.add(item.costKey);
+    if(item.type==='yesno'&&a.ans==='yes')usedKeys.add(item.costKey);
+    if(item.type==='yesqty'&&a.ans==='yes'&&(a.followQty||0)>0)usedKeys.add(item.costKey);
+  }));
+  if(usedKeys.size===0){
+    el.innerHTML='<div style="font-size:13px;color:var(--ink4);text-align:center;padding:16px 0;font-style:italic;">Fill in checklist items first — only used cost items will appear here</div>';
+    return;
+  }
+  CAT_GROUPS.forEach(cat=>{
+    const catKeys=cat.keys.filter(k=>usedKeys.has(k));
+    if(!catKeys.length)return;
+    const head=document.createElement('div');
+    head.innerHTML=`<div style="font-size:10px;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;color:var(--copper);margin:14px 0 6px;">${eh(cat.label)}</div>`;
+    el.appendChild(head);
+    catKeys.forEach(k=>{
+      const d=COSTS[k];if(!d)return;
+      const row=document.createElement('div');
+      row.className='mxr';
+      row.innerHTML=`<div class="mxl">${eh(d.label)}</div><div style="display:flex;align-items:center;gap:4px;"><span style="color:var(--ink4);font-size:13px;">$</span><input class="mxi" id="cost-${k}" type="number" value="${d.cost}" min="0" step="5" oninput="updEst()" style="width:76px;"></div>`;
+      el.appendChild(row);
+    });
+  });
+}
+
+function showPg(name){
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.getElementById('page-'+name)?.classList.add('active');
+  S.page=name;
+  renderTabs();
+  if(name==='report')buildGilReport();
+  if(name==='proposal')buildProposal();
+  if(name==='estimate'){updEst();renderCostEditor();}
+  window.scrollTo(0,0);
+}
+function nextPg(){const i=S.pages.indexOf(S.page);if(i<S.pages.length-2)showPg(S.pages[i+1]);}
+function prevPg(){const i=S.pages.indexOf(S.page);if(i>0)showPg(S.pages[i-1]);}
+
+function tc(head){
+  const body=head.nextElementSibling,ch=head.querySelector('.chev');
+  const open=body.classList.toggle('o');
+  if(ch)ch.classList.toggle('o',open);
+}
+
+function gv(id){return document.getElementById(id)?.value?.trim()||'—';}
+
+// ── GIL REPORT (WhatsApp to owner) ──
+function buildGilReport(){
+  const info=[['Client',gv('fn')],['Phone',gv('fph')],['Address',gv('fadr')],['Type',gv('ftype')],['Owner/Renter',gv('fown')],['HOA',gv('fhoa')],['HOA Phone',gv('fhoap')],['Timeline',gv('ftl')],['Other Quotes',gv('fq')],['Budget',gv('fbud')]];
+  const legTxt=S.leg===2?'Both present (2 legs)':S.leg===1?`1 leg — missing: ${gv('fmiss')}`:'—';
+  let h=info.map(([k,v])=>`<div class="rrow"><span class="rk">${k}</span><span class="rv">${eh(v)}</span></div>`).join('');
+  h+=`<div class="rrow"><span class="rk">Decision makers</span><span class="rv">${eh(legTxt)}</span></div>`;
+  h+=`<div class="rrow"><span class="rk">Goal</span><span class="rv">${eh(gv('fgoal'))}</span></div>`;
+  h+=`<div class="rrow"><span class="rk">Scope</span><span class="rv">${eh(S.scope.filter(s=>s!=='fullhome').join(', ')||'—')}</span></div>`;
+  const SLBLS={kitchen:'Kitchen',bathroom:'Bathroom',master:'Master Bath',floors:'Floors',windows:'Windows',paint:'Paint',closet:'Closet',patio:'Patio',addition:'Addition'};
+  getActiveScopePages().forEach(s=>{
+    (SCOPE_GRP[s]||[]).forEach(gk=>{
+      const grp=G[gk];if(!grp)return;
+      const lines=[];
+      grp.items.forEach(item=>{
+        const a=ga(item.id);if(!answered(item.id,item.type))return;
+        if(item.type==='qty'&&(a.qty||0)>0)lines.push(`${item.q}: ${a.qty} ${item.unit||''}`);
+        else if(item.type==='yesno'&&a.ans==='yes')lines.push(item.q);
+        else if(item.type==='yesqty'&&a.ans==='yes')lines.push(`${item.q}: ${a.followQty||0} ${item.unit||''}`);
+        else if(item.type==='options'&&a.ans)lines.push(`${item.q}: ${a.ans}`);
+      });
+      if(lines.length){
+        h+=`<div class="rh">${SLBLS[s]||s}</div>`;
+        h+=lines.map(l=>`<div class="rrow"><span class="rk">·</span><span class="rv" style="text-align:left;flex:1;">${eh(l)}</span></div>`).join('');
+      }
+    });
+  });
+  document.getElementById('rpt-content').innerHTML=h;
+}
+
+function copyGilReport(){
+  let t='🏠 MIAMI FIRST REMODELING — SITE VISIT SCOPE\n'+'─'.repeat(40)+'\n\n';
+  t+=`CLIENT: ${gv('fn')}\nADDRESS: ${gv('fadr')}\nPROPERTY: ${gv('ftype')} | ${gv('fown')} | HOA: ${gv('fhoa')} ${gv('fhoap')}\n`;
+  t+=`TIMELINE: ${gv('ftl')}\nBUDGET MENTIONED: ${gv('fbud')}\nDECISION MAKERS: ${S.leg===2?'Both present':S.leg===1?`1 leg — missing: ${gv('fmiss')}`:'—'}\nOTHER QUOTES: ${gv('fq')}\n\n`;
+  t+=`CLIENT GOAL:\n${gv('fgoal')}\n\nSCOPE: ${S.scope.filter(s=>s!=='fullhome').join(', ')||'—'}\n\n`;
+  getActiveScopePages().forEach(s=>{
+    (SCOPE_GRP[s]||[]).forEach(gk=>{
+      const grp=G[gk];if(!grp)return;
+      const lines=[];
+      grp.items.forEach(item=>{
+        const a=ga(item.id);if(!answered(item.id,item.type))return;
+        if(item.type==='qty'&&(a.qty||0)>0)lines.push(`• ${item.q}: ${a.qty} ${item.unit||''}`);
+        else if(item.type==='yesno'&&a.ans==='yes')lines.push(`• ${item.q}`);
+        else if(item.type==='yesqty'&&a.ans==='yes')lines.push(`• ${item.q}: ${a.followQty||0} ${item.unit||''}`);
+        else if(item.type==='options'&&a.ans)lines.push(`• ${item.q}: ${a.ans}`);
+      });
+      if(lines.length)t+=`${s.toUpperCase()}:\n${lines.join('\n')}\n\n`;
+    });
+  });
+  const fn=gv('ffn');if(fn!=='—')t+=`NOTES FOR GIL:\n${fn}\n\n`;
+  t+=`Sent from field by ${gv('fn')?'rep on site':'sales rep'}`;
+  navigator.clipboard.writeText(t).then(()=>showToast('Copied — send to Gil!')).catch(()=>alert(t));
+}
+
+// ── PROPOSAL (Client-facing) ──
+function buildProposal(){
+  // Date
+  const el=document.getElementById('prop-date');
+  if(el)el.textContent=new Date().toLocaleDateString('en-US',{year:'numeric',month:'long',day:'numeric'});
+  // Greeting
+  const name=gv('fn');
+  const greet=document.getElementById('prop-greeting');
+  if(greet)greet.textContent=`Dear ${name!=='—'?name:'Valued Client'},`;
+  // Intro
+  const intro=document.getElementById('prop-intro');
+  const goal=gv('fgoal');
+  if(intro){
+    const goalLine=goal!=='—'?` Based on your vision — "${goal.substring(0,120)}${goal.length>120?'…':''}" — here is our tailored proposal.`:'';
+    intro.textContent=`Thank you for welcoming us into your home at ${gv('fadr')==='—'?'your property':gv('fadr')}.${goalLine}`;
+  }
+  // Scope bullets
+  const SLBLS={kitchen:'Kitchen Remodel',bathroom:'Bathroom Remodel',master:'Master Bath Remodel',floors:'Flooring',windows:'Impact Windows & Doors',paint:'Interior/Exterior Paint',closet:'Custom Closet',patio:'Outdoor / Patio',addition:'Home Addition'};
+  const scopeEl=document.getElementById('prop-scope');
+  if(scopeEl){
+    const lines=[];
+    getActiveScopePages().forEach(s=>{
+      const items=[];
+      (SCOPE_GRP[s]||[]).forEach(gk=>{
+        const grp=G[gk];if(!grp)return;
+        grp.items.forEach(item=>{
+          const a=ga(item.id);if(!answered(item.id,item.type))return;
+          if(item.tag==='alert')return; // skip internal flags
+          if(item.type==='options'&&a.ans&&!['Existing / None','Existing / N/A','None / Open','None / Keep existing'].includes(a.ans))items.push(a.ans);
+          else if(item.type==='yesno'&&a.ans==='yes')items.push(item.q.replace(/\?$/,''));
+          else if(item.type==='yesqty'&&a.ans==='yes'&&(a.followQty||0)>0)items.push(`${item.q.replace(/\?$/,'')}: ${a.followQty} ${item.unit||''}`);
+          else if(item.type==='qty'&&(a.qty||0)>0)items.push(`${a.qty} ${item.unit||''} — ${item.q}`);
+        });
+      });
+      if(items.length||S.scope.includes(s)){
+        lines.push({section:SLBLS[s]||s, items:[...new Set(items)].slice(0,8)});
+      }
+    });
+    if(!lines.length){scopeEl.innerHTML='<div style="color:var(--ink4);font-style:italic;font-size:13px;">Fill in the checklist tabs first</div>';return;}
+    let h='';
+    lines.forEach(({section,items:its})=>{
+      h+=`<div style="margin-bottom:12px;"><div style="font-size:11px;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;color:var(--copper);margin-bottom:5px;">${eh(section)}</div>`;
+      if(its.length)h+=its.map(i=>`<div style="font-size:13px;color:var(--ink2);padding:3px 0 3px 12px;border-left:2px solid var(--cream3);">· ${eh(i)}</div>`).join('');
+      h+=`</div>`;
+    });
+    scopeEl.innerHTML=h;
+  }
+  updProposal();
+}
+
+function updProposal(){
+  const{total}=calcCost();const mx=getMx();
+  const good=total*mx.good,better=total*mx.better,best=total*mx.best;
+  const s=(id,v)=>{const e=document.getElementById(id);if(e)e.textContent=v;};
+  s('pt-good',fmtFull(good));s('pt-better',fmtFull(better));s('pt-best',fmtFull(best));
+  s('pt-good-mo',fmtK(good/18)+'/mo × 18');s('pt-better-mo',fmtK(better/18)+'/mo × 18');s('pt-best-mo',fmtK(best/18)+'/mo × 18');
+  // Discount
+  const pctOn=document.getElementById('disc-pct')?.checked;
+  const depOn=document.getElementById('disc-dep')?.checked;
+  const pct=parseFloat(document.getElementById('disc-val')?.value)||10;
+  const discEl=document.getElementById('disc-display');
+  if(pctOn&&discEl){
+    discEl.style.display='block';
+    const mult=1-pct/100;
+    s('pd-good',fmtFull(good*mult));s('pd-better',fmtFull(better*mult));s('pd-best',fmtFull(best*mult));
+  } else if(discEl){discEl.style.display='none';}
+}
+
+function copyProposal(){
+  const{total}=calcCost();const mx=getMx();
+  const good=total*mx.good,better=total*mx.better,best=total*mx.best;
+  const pctOn=document.getElementById('disc-pct')?.checked;
+  const depOn=document.getElementById('disc-dep')?.checked;
+  const pct=parseFloat(document.getElementById('disc-val')?.value)||10;
+  const mult=1-pct/100;
+  const name=gv('fn');
+  const SLBLS={kitchen:'Kitchen Remodel',bathroom:'Bathroom Remodel',master:'Master Bath Remodel',floors:'Flooring',windows:'Impact Windows & Doors',paint:'Paint',closet:'Custom Closet',patio:'Outdoor / Patio',addition:'Home Addition'};
+  let t=`🏠 MIAMI FIRST REMODELING — PROJECT PROPOSAL\n${'─'.repeat(42)}\n\n`;
+  t+=`Dear ${name!=='—'?name:'Valued Client'},\n\n`;
+  t+=`Thank you for welcoming us into your home at ${gv('fadr')==='—'?'your property':gv('fadr')}.\n`;
+  const goal=gv('fgoal');if(goal!=='—')t+=`Based on your vision: "${goal.substring(0,150)}"\n`;
+  t+=`\n📋 YOUR PROJECT SCOPE\n${'─'.repeat(28)}\n`;
+  getActiveScopePages().forEach(s=>{
+    const items=[];
+    (SCOPE_GRP[s]||[]).forEach(gk=>{
+      const grp=G[gk];if(!grp)return;
+      grp.items.forEach(item=>{
+        const a=ga(item.id);if(!answered(item.id,item.type)||item.tag==='alert')return;
+        if(item.type==='yesno'&&a.ans==='yes')items.push(item.q.replace(/\?$/,''));
+        else if(item.type==='yesqty'&&a.ans==='yes'&&(a.followQty||0)>0)items.push(`${item.q.replace(/\?$/,'')}: ${a.followQty} ${item.unit||''}`);
+        else if(item.type==='qty'&&(a.qty||0)>0)items.push(`${item.q}: ${a.qty} ${item.unit||''}`);
+        else if(item.type==='options'&&a.ans)items.push(`${item.q}: ${a.ans}`);
+      });
+    });
+    if(items.length){t+=`\n${SLBLS[s]||s.toUpperCase()}:\n`;items.slice(0,8).forEach(i=>t+=`  · ${i}\n`);}
+  });
+  t+=`\n💰 YOUR INVESTMENT OPTIONS\n${'─'.repeat(28)}\n`;
+  t+=`All prices include: labor, materials, permits, demo & full coordination.\n\n`;
+  t+=`  GOOD   — ${fmtFull(good)} (${fmtK(good/18)}/month)\n`;
+  t+=`  BETTER — ${fmtFull(better)} (${fmtK(better/18)}/month)\n`;
+  t+=`  BEST ★ — ${fmtFull(best)} (${fmtK(best/18)}/month)\n`;
+  t+=`\n  18 months 0% interest financing · 8.8% APR thereafter\n`;
+  if(pctOn||depOn){
+    t+=`\n🎁 SPECIAL INCENTIVES\n${'─'.repeat(28)}\n`;
+    if(pctOn)t+=`  ✓ Sign today — save ${pct}%\n    GOOD ${fmtFull(good*mult)} · BETTER ${fmtFull(better*mult)} · BEST ${fmtFull(best*mult)}\n`;
+    if(depOn)t+=`  ✓ $500 Design Deposit — 100% applied to project\n    Secures your slot & gets design started this week\n`;
+  }
+  const pnotes=document.getElementById('prop-notes')?.value?.trim();
+  if(pnotes)t+=`\n${pnotes}\n`;
+  t+=`\nThis estimate is valid for 30 days from today.\n`;
+  t+=`\nMiami First Remodeling Corporation · CGC1530409\n29 S Federal Hwy Unit B, Dania Beach FL 33004\n`;
+  navigator.clipboard.writeText(t).then(()=>showToast('Proposal copied!')).catch(()=>alert(t));
+}
+
+function showToast(msg){const el=document.getElementById('toast');el.textContent=msg||'Copied!';el.classList.add('show');setTimeout(()=>el.classList.remove('show'),2500);}
+
+async function genGoal(){
+  const notes=document.getElementById('fgoal')?.value?.trim();
+  if(!notes){alert('Write their rough notes first, then polish.');return;}
+  const btn=document.getElementById('aibtn');
+  btn.disabled=true;btn.textContent='…';
+  try{
+    const res=await fetch('https://api.anthropic.com/v1/messages',{
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({
+        model:'claude-sonnet-4-20250514',
+        max_tokens:300,
+        messages:[{role:'user',content:`You are a professional remodeling sales assistant. A sales rep took these rough notes during a site visit about what the client wants:\n\n"${notes}"\n\nWrite a polished, professional 2-3 sentence summary of the client's project vision. Write in third person, present tense. Focus on what they want, not technical specs. Sound warm and aspirational. Return ONLY the summary, no preamble.`}]
+      })
+    });
+    const data=await res.json();
+    const txt=data.content?.[0]?.text||'Could not generate. Try again.';
+    document.getElementById('aitext').textContent=txt;
+    document.getElementById('airesult').style.display='block';
+  } catch(e){alert('AI not available — check connection.');}
+  finally{btn.disabled=false;btn.textContent='✨ Polish';}
+}
+
+function useAI(){
+  const txt=document.getElementById('aitext')?.textContent;
+  if(txt)document.getElementById('fgoal').value=txt;
+  document.getElementById('airesult').style.display='none';
+}
+
+function resetAll(){
+  if(!confirm('Clear everything and start a new visit?'))return;
+  S.a={};S.scope=[];S.leg=null;
+  document.querySelectorAll('.fi').forEach(el=>{if(el.tagName==='SELECT')el.selectedIndex=0;else el.value='';});
+  document.querySelectorAll('.sp').forEach(b=>b.classList.remove('on'));
+  document.getElementById('leg2').className='lbadge';
+  document.getElementById('leg1').className='lbadge';
+  document.getElementById('miss-wrap').style.display='none';
+  document.getElementById('airesult').style.display='none';
+  initAll();showPg('client');
+}
+
+function initAll(){
+  Object.keys(G).forEach(k=>renderGrp(k));
+  renderCostEditor();updEst();updateProgress();
+}
+
+document.addEventListener('DOMContentLoaded',()=>{renderTabs();initAll();});
+</script>
+</body>
+</html>
