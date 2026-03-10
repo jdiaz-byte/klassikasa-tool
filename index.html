@@ -97,6 +97,9 @@ select.fi{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.o
 .sbtn:active{background:var(--ink);color:white;border-radius:7px;}
 .sval{width:32px;text-align:center;font-family:'Cormorant Garamond',serif;font-size:19px;font-weight:500;color:var(--ink);line-height:1;}
 .sval.z{color:var(--cream3);}
+.sval-inp{width:52px;text-align:center;font-family:'Cormorant Garamond',serif;font-size:19px;font-weight:500;color:var(--ink);border:none;background:transparent;outline:none;-moz-appearance:textfield;}
+.sval-inp::-webkit-outer-spin-button,.sval-inp::-webkit-inner-spin-button{-webkit-appearance:none;margin:0;}
+.sval-inp:focus{background:var(--cream2);border-radius:6px;}
 .fup{display:flex;align-items:center;justify-content:space-between;margin-top:9px;padding:10px 13px;background:var(--cream);border-radius:10px;border:1.5px solid var(--cream3);animation:sd .2s ease;}
 @keyframes sd{from{opacity:0;transform:translateY(-5px)}to{opacity:1;transform:translateY(0)}}
 .fupl{font-size:13px;font-weight:600;color:var(--ink2);}
@@ -153,6 +156,19 @@ select.fi{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.o
 .nnext:active{transform:scale(.99);}
 .toast{position:fixed;bottom:90px;left:50%;transform:translateX(-50%);background:var(--sage);color:white;padding:10px 22px;border-radius:99px;font-size:13px;font-weight:600;opacity:0;pointer-events:none;transition:opacity .3s;z-index:999;white-space:nowrap;}
 .toast.show{opacity:1;}
+
+@media print {
+  body { background: white !important; }
+  .pline, .header, .bnav, .toast, .ewarn, .aibtn,
+  .page:not(#page-proposal), #page-proposal .rb:last-of-type .cpbtn,
+  #page-proposal .rb:last-of-type button:not(.print-hide) { display: none !important; }
+  #page-proposal { display: block !important; }
+  .main { padding: 0 !important; max-width: 100% !important; }
+  .rb { box-shadow: none !important; border: 1px solid #ddd !important; page-break-inside: avoid; }
+  .tbox { border: 1px solid #ccc !important; }
+  body { font-size: 13px !important; }
+}
+
 @media(min-width:600px){.main{padding:26px 22px 130px;}}
 </style>
 </head>
@@ -249,7 +265,7 @@ select.fi{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.o
   <div class="card"><div class="ch" onclick="tc(this)"><div class="ci" style="background:var(--slate-bg)">🪵</div><div class="cinfo"><div class="ct">Cabinets — Count by Box</div><div class="cs">Each unit = 1 box regardless of drawers</div></div><div class="cbadge bn" id="cb-k-cabs">0/6</div><span class="chev">▾</span></div><div class="cb"><div id="qi-k-cabs"></div></div></div>
   <div class="card"><div class="ch" onclick="tc(this)"><div class="ci" style="background:var(--red-bg)">🔨</div><div class="cinfo"><div class="ct">Demo & Labor</div><div class="cs">Gut, walls, paint</div></div><div class="cbadge bn" id="cb-k-demo">0/3</div><span class="chev">▾</span></div><div class="cb"><div id="qi-k-demo"></div></div></div>
   <div class="card"><div class="ch" onclick="tc(this)"><div class="ci" style="background:var(--sage-bg)">🔧</div><div class="cinfo"><div class="ct">Plumbing</div><div class="cs">Sink, dishwasher, gas, pot filler</div></div><div class="cbadge bn" id="cb-k-plumb">0/5</div><span class="chev">▾</span></div><div class="cb"><div id="qi-k-plumb"></div></div></div>
-  <div class="card"><div class="ch" onclick="tc(this)"><div class="ci" style="background:#FFFBEB">⚡</div><div class="cinfo"><div class="ct">Electrical</div><div class="cs">Lighting, hood, outlets</div></div><div class="cbadge bn" id="cb-k-elec">0/4</div><span class="chev">▾</span></div><div class="cb"><div id="qi-k-elec"></div></div></div>
+  <div class="card"><div class="ch" onclick="tc(this)"><div class="ci" style="background:#FFFBEB">⚡</div><div class="cinfo"><div class="ct">Electrical</div><div class="cs">Lighting, hood, outlets</div></div><div class="cbadge bn" id="cb-k-elec">0/6</div><span class="chev">▾</span></div><div class="cb"><div id="qi-k-elec"></div></div></div>
   <div class="card"><div class="ch" onclick="tc(this)"><div class="ci" style="background:#FAF5FF">🔲</div><div class="cinfo"><div class="ct">Kitchen Flooring</div><div class="cs">Only if replacing — skip if keeping existing</div></div><div class="cbadge bn" id="cb-k-floor">0/3</div><span class="chev">▾</span></div><div class="cb"><div id="qi-k-floor"></div></div></div>
 </div>
 
@@ -355,12 +371,29 @@ select.fi{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.o
   <div class="rb">
     <div class="rt" style="margin-bottom:4px;">💰 Your Investment Options</div>
     <div style="font-size:12px;color:var(--ink4);margin-bottom:14px;">All prices include labor, materials, permits, demo, and full coordination.</div>
-    <div class="trow" id="prop-tiers">
-      <div class="tbox good"><div class="tlbl good">Good</div><div class="tprice good" id="pt-good">$—</div><div class="tmo" id="pt-good-mo">—/mo × 18</div></div>
-      <div class="tbox better"><div class="tlbl better">Better</div><div class="tprice better" id="pt-better">$—</div><div class="tmo" id="pt-better-mo">—/mo × 18</div></div>
-      <div class="tbox best"><div class="tlbl best">Best ★</div><div class="tprice best" id="pt-best">$—</div><div class="tmo" id="pt-best-mo">—/mo × 18</div></div>
+    <div class="trow" id="prop-tiers" style="grid-template-columns:1fr 1fr;">
+      <div class="tbox good"><div class="tlbl good">Good</div><div class="tprice good" id="pt-good">$—</div><div class="tmo" id="pt-good-mo" style="font-size:10px;">—/mo × 18 (0%)</div></div>
+      <div class="tbox best"><div class="tlbl best">Best ★</div><div class="tprice best" id="pt-best">$—</div><div class="tmo" id="pt-best-mo" style="font-size:10px;">—/mo × 18 (0%)</div></div>
     </div>
-    <div style="font-size:11px;color:var(--ink4);text-align:center;">18 months — 0% interest financing available · 8.8% APR thereafter</div>
+    <!-- Financing table at 8.99% APR -->
+    <div style="margin-top:14px;background:var(--cream);border-radius:10px;padding:12px 14px;">
+      <div style="font-size:10px;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;color:var(--ink4);margin-bottom:10px;">Monthly Payment at 8.99% APR</div>
+      <div style="display:grid;grid-template-columns:auto 1fr 1fr;gap:6px 10px;align-items:center;">
+        <div style="font-size:11px;font-weight:700;color:var(--ink4);">Term</div>
+        <div style="font-size:11px;font-weight:700;color:var(--sage);text-align:center;">Good</div>
+        <div style="font-size:11px;font-weight:700;color:var(--copper);text-align:center;">Best ★</div>
+        <div style="font-size:12px;color:var(--ink3);">36 mo</div>
+        <div style="font-size:13px;font-weight:600;color:var(--sage);text-align:center;" id="fin-good-36">—</div>
+        <div style="font-size:13px;font-weight:600;color:var(--copper);text-align:center;" id="fin-best-36">—</div>
+        <div style="font-size:12px;color:var(--ink3);">60 mo</div>
+        <div style="font-size:13px;font-weight:600;color:var(--sage);text-align:center;" id="fin-good-60">—</div>
+        <div style="font-size:13px;font-weight:600;color:var(--copper);text-align:center;" id="fin-best-60">—</div>
+        <div style="font-size:12px;color:var(--ink3);">84 mo</div>
+        <div style="font-size:13px;font-weight:600;color:var(--sage);text-align:center;" id="fin-good-84">—</div>
+        <div style="font-size:13px;font-weight:600;color:var(--copper);text-align:center;" id="fin-best-84">—</div>
+      </div>
+      <div style="margin-top:8px;font-size:10px;color:var(--ink4);">Based on credit approval · 18-month 0% promo also available</div>
+    </div>
   </div>
 
   <!-- Discount / Incentives -->
@@ -411,24 +444,67 @@ select.fi{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.o
 
   <!-- Notes + closing -->
   <div class="rb">
-    <div class="rt" style="font-size:15px;margin-bottom:10px;">Personalized Message</div>
-    <textarea class="fi" id="prop-notes" placeholder="Add a personal note to the client… e.g. 'It was great meeting you and seeing your vision for the space.'" style="min-height:80px;" oninput="updProposal()"></textarea>
+    <div class="rt" style="font-size:15px;margin-bottom:10px;">Personal Message</div>
+    <textarea class="fi" id="prop-notes" placeholder="Add a personal note… e.g. 'It was wonderful meeting you both — I'm excited about what we're going to create for your home.'" style="min-height:80px;" oninput="updProposal()"></textarea>
+
+    <!-- Review CTA -->
+    <div style="margin-top:14px;background:var(--sage-bg);border:1.5px solid var(--sage-b);border-radius:12px;padding:14px 16px;">
+      <div style="font-size:11px;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;color:var(--sage);margin-bottom:6px;">⭐ Review Request</div>
+      <div style="font-size:13px;color:var(--ink2);line-height:1.6;">We'd love to hear how your experience with us went. If Juan took great care of you today, a quick Google review means the world to us — it helps other families find a contractor they can trust.</div>
+      <div style="margin-top:8px;font-size:12px;font-weight:600;color:var(--sage);">👉 Search "Miami First Remodeling" on Google → Leave a review for Juan</div>
+    </div>
+
     <div style="margin-top:12px;padding:12px 14px;background:var(--cream);border-radius:10px;font-size:12px;color:var(--ink4);line-height:1.6;">
       <strong style="color:var(--ink3);">CGC1530409</strong> · Miami First Remodeling Corporation · 29 S Federal Hwy Unit B, Dania Beach FL 33004<br>
       This estimate is valid for 30 days · Financing subject to approval
     </div>
     <button class="cpbtn" onclick="copyProposal()" style="margin-top:10px;">📄 Copy Proposal — Send to Client</button>
+    <button class="cpbtn" onclick="dlPDF()" style="margin-top:8px;background:var(--slate);">⬇️ Download as PDF</button>
   </div>
 </div>
 
 <!-- ESTIMATE -->
 <div class="page" id="page-estimate">
   <div class="ewarn">🔒 Internal only — do not show to client.</div>
-  <div class="card"><div class="ch" onclick="tc(this)"><div class="ci" style="background:var(--copper-bg)">📊</div><div class="cinfo"><div class="ct">Live Estimate</div><div class="cs">Updates from checklist quantities</div></div><span class="chev o">▾</span></div><div class="cb o"><div class="trow"><div class="tbox good"><div class="tlbl good">Good</div><div class="tprice good" id="tg">$0</div><div class="tmo" id="tgmo">—/mo</div><div class="tmg good" id="tgmg">55%</div></div><div class="tbox better"><div class="tlbl better">Better</div><div class="tprice better" id="tb">$0</div><div class="tmo" id="tbmo">—/mo</div><div class="tmg better" id="tbmg">62%</div></div><div class="tbox best"><div class="tlbl best">Best</div><div class="tprice best" id="tbs">$0</div><div class="tmo" id="tbsmo">—/mo</div><div class="tmg best" id="tbsmg">67%</div></div></div><div id="ebd"><div style="font-size:13px;color:var(--ink4);text-align:center;padding:8px 0;font-style:italic;">Add quantities to see breakdown</div></div></div></div>
-  <div class="card"><div class="ch" onclick="tc(this)"><div class="ci" style="background:var(--cream2)">⚙️</div><div class="cinfo"><div class="ct">Tier Multipliers</div><div class="cs">Good = floor — never go below</div></div><span class="chev">▾</span></div><div class="cb"><div class="mxr"><div class="mxl" style="color:var(--sage);font-weight:600;">Good — floor</div><input class="mxi" id="mxg" type="number" value="2.22" step="0.01" oninput="updEst()"><div class="mxn" id="mxng" style="color:var(--sage);">55%</div></div><div class="mxr"><div class="mxl" style="color:var(--slate);font-weight:600;">Better</div><input class="mxi" id="mxbt" type="number" value="2.6" step="0.01" oninput="updEst()"><div class="mxn" id="mxnbt" style="color:var(--slate);">62%</div></div><div class="mxr"><div class="mxl" style="color:var(--copper);font-weight:600;">Best — always start here</div><input class="mxi" id="mxbs" type="number" value="3.0" step="0.01" oninput="updEst()"><div class="mxn" id="mxnbs" style="color:var(--copper);">67%</div></div></div></div>
+  <div class="card"><div class="ch" onclick="tc(this)"><div class="ci" style="background:var(--copper-bg)">📊</div><div class="cinfo"><div class="ct">Live Estimate</div><div class="cs">Updates from checklist quantities</div></div><span class="chev o">▾</span></div><div class="cb o">
+  <!-- Gil's range override -->
+  <div style="background:var(--copper-bg);border:1.5px solid var(--copper-b);border-radius:10px;padding:12px 14px;margin-bottom:14px;">
+    <div style="font-size:10px;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;color:var(--copper);margin-bottom:8px;">Gil's Price Range</div>
+    <div style="font-size:12px;color:var(--ink3);margin-bottom:10px;">Enter the range Gil gave you — the tool will apply Good/Best multipliers to each end.</div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
+      <div class="fl"><div class="flab">Gil Low ($)</div><input class="fi" id="gil-low" type="number" placeholder="e.g. 12000" oninput="updEst()" style="font-size:15px;"></div>
+      <div class="fl"><div class="flab">Gil High ($)</div><input class="fi" id="gil-high" type="number" placeholder="e.g. 15000" oninput="updEst()" style="font-size:15px;"></div>
+    </div>
+    <div style="font-size:10px;color:var(--copper);margin-top:8px;">💡 Leave blank to use the auto-calculated cost from your checklist</div>
+  </div>
+  <!-- Good / Best only (no Better) -->
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:14px;">
+    <div class="tbox good">
+      <div class="tlbl good">Good — floor</div>
+      <div style="font-size:11px;color:var(--sage);margin-bottom:4px;">Low end</div>
+      <div class="tprice good" id="tg-low" style="font-size:20px;">$0</div>
+      <div style="font-size:11px;color:var(--sage);margin-top:6px;">High end</div>
+      <div class="tprice good" id="tg-high" style="font-size:20px;">$0</div>
+      <div class="tmo" id="tgmg">55% margin</div>
+    </div>
+    <div class="tbox best">
+      <div class="tlbl best">Best ★ — start here</div>
+      <div style="font-size:11px;color:var(--copper);margin-bottom:4px;">Low end</div>
+      <div class="tprice best" id="tbs-low" style="font-size:20px;">$0</div>
+      <div style="font-size:11px;color:var(--copper);margin-top:6px;">High end</div>
+      <div class="tprice best" id="tbs-high" style="font-size:20px;">$0</div>
+      <div class="tmg best" id="tbsmg">67% margin</div>
+    </div>
+  </div>
+  <div id="ebd"><div style="font-size:13px;color:var(--ink4);text-align:center;padding:8px 0;font-style:italic;">Add quantities or enter Gil's range above</div></div>
+</div></div>
+  <div class="card"><div class="ch" onclick="tc(this)"><div class="ci" style="background:var(--cream2)">⚙️</div><div class="cinfo"><div class="ct">Tier Multipliers</div><div class="cs">Good = floor — never go below</div></div><span class="chev">▾</span></div><div class="cb"><div class="mxr"><div class="mxl" style="color:var(--sage);font-weight:600;">Good — floor (never go below)</div><input class="mxi" id="mxg" type="number" value="2.22" step="0.01" oninput="updEst()"><div class="mxn" id="mxng" style="color:var(--sage);">55%</div></div><div class="mxr"><div class="mxl" style="color:var(--copper);font-weight:600;">Best — always start here</div><input class="mxi" id="mxbs" type="number" value="3.0" step="0.01" oninput="updEst()"><div class="mxn" id="mxnbs" style="color:var(--copper);">67%</div></div></div></div>
   <div class="card"><div class="ch" onclick="tc(this)"><div class="ci" style="background:var(--cream2)">✏️</div><div class="cinfo"><div class="ct">Edit Unit Costs</div><div class="cs">Gil's internal cost per item</div></div><span class="chev">▾</span></div><div class="cb"><div id="cost-editor"></div></div></div>
 </div>
 
+  <div style="padding:0 16px 0;max-width:680px;margin:0 auto;">
+    <button class="cpbtn danger" onclick="resetEst()" style="margin-bottom:8px;">↺ Reset $ Values</button>
+  </div>
 </div><!-- /main -->
 <div class="bnav"><button class="nbtn nback" onclick="prevPg()">← Back</button><button class="nbtn nnext" onclick="nextPg()">Next →</button></div>
 <div class="toast" id="toast">Copied!</div>
@@ -496,6 +572,8 @@ const G={
     {id:'ke2',q:'Recessed lights in ceiling?',type:'qty',unit:'lights',costKey:'recess'},
     {id:'ke3',q:'Range hood type',type:'options',opts:['Ducted','Ductless','Existing / None']},
     {id:'ke4',q:'GFCI outlets needed?',hint:'Code: every 4ft on countertop',type:'qty',unit:'outlets',costKey:'gfci',tag:'alert'},
+    {id:'ke5',q:'Electrical panel upgrade needed?',hint:'Older homes often have 100A — kitchen remodel may require 200A. Flag for Gil.',type:'yesno',tag:'alert'},
+    {id:'ke6',q:'Dedicated circuits needed?',hint:'Fridge, DW, microwave, range each need their own circuit',type:'yesqty',unit:'circuits',tag:'alert'},
   ]},
   'k-floor':{items:[
     {id:'kfl1',q:'Replacing kitchen floor?',hint:'Skip if keeping existing',type:'yesno'},
@@ -747,19 +825,19 @@ function buildQI(item){
     h+=`<button class="fchk${a.ans?' on':''}" onclick="doFlow('${item.id}','${gk}')"></button>`;
   } else if(item.type==='qty'){
     const v=a.qty||0;
-    h+=`<div class="stpr"><button class="sbtn" onclick="doAdj('${item.id}','${gk}',-1)">−</button><div class="sval${v===0?' z':''}">${v}</div><button class="sbtn" onclick="doAdj('${item.id}','${gk}',1)">+</button></div>`;
+    h+=`<div class="stpr"><button class="sbtn" onclick="doAdj('${item.id}','${gk}',-1)">−</button><input class="sval-inp" type="number" min="0" value="${v}" inputmode="numeric" onchange="doSet('${item.id}','${gk}',this.value)" onfocus="this.select()"><button class="sbtn" onclick="doAdj('${item.id}','${gk}',1)">+</button></div>`;
   } else if(item.type==='yesno'||item.type==='yesqty'){
     h+=`<div class="yn"><button class="ynb y${a.ans==='yes'?' on':''}" onclick="doYN('${item.id}','yes','${gk}')">Yes</button><button class="ynb n${a.ans==='no'?' on':''}" onclick="doYN('${item.id}','no','${gk}')">No</button></div>`;
   }
   h+=`</div>`;
   if(item.type==='options'){
     h+=`<div class="opts">`;
-    item.opts.forEach(o=>{ h+=`<button class="opt${a.ans===o?' on':''}" onclick="doOpt('${item.id}','${gk}','${o.replace(/'/g,"\\'")}'")">${eh(o)}</button>`; });
+    item.opts.forEach((o,i)=>{ h+=`<button class="opt${a.ans===o?' on':''}" data-id="${item.id}" data-gk="${gk}" data-idx="${i}" onclick="selOpt(this)">${eh(o)}</button>`; });
     h+=`</div>`;
   }
   if(item.type==='yesqty'&&a.ans==='yes'){
     const fv=a.followQty||0;
-    h+=`<div class="fup"><div class="fupl">How many ${eh(item.unit||'units')}?</div><div class="stpr"><button class="sbtn" onclick="doFol('${item.id}','${gk}',-1)">−</button><div class="sval${fv===0?' z':''}">${fv}</div><button class="sbtn" onclick="doFol('${item.id}','${gk}',1)">+</button></div></div>`;
+    h+=`<div class="fup"><div class="fupl">How many ${eh(item.unit||'units')}?</div><div class="stpr"><button class="sbtn" onclick="doFol('${item.id}','${gk}',-1)">−</button><input class="sval-inp" type="number" min="0" value="${fv}" inputmode="numeric" onchange="doFolSet('${item.id}','${gk}',this.value)" onfocus="this.select()"><button class="sbtn" onclick="doFol('${item.id}','${gk}',1)">+</button></div></div>`;
   }
   return h;
 }
@@ -769,8 +847,17 @@ function findGrp(id){for(const k in G)if(G[k].items.find(i=>i.id===id))return k;
 
 function doYN(id,val,gk){const c=ga(id).ans;sa(id,{ans:c===val?null:val});renderGrp(gk);updEst();}
 function doAdj(id,gk,d){sa(id,{qty:Math.max(0,(ga(id).qty||0)+d)});renderGrp(gk);updEst();}
+function doSet(id,gk,val){sa(id,{qty:Math.max(0,parseInt(val)||0)});renderGrp(gk);updEst();}
 function doFol(id,gk,d){sa(id,{followQty:Math.max(0,(ga(id).followQty||0)+d)});renderGrp(gk);updEst();}
+function doFolSet(id,gk,val){sa(id,{followQty:Math.max(0,parseInt(val)||0)});renderGrp(gk);updEst();}
 function doOpt(id,gk,val){sa(id,{ans:ga(id).ans===val?null:val});renderGrp(gk);}
+function selOpt(btn){
+  const id=btn.dataset.id,gk=btn.dataset.gk,idx=parseInt(btn.dataset.idx);
+  const grp=G[gk];if(!grp)return;
+  const item=grp.items.find(i=>i.id===id);if(!item)return;
+  const val=item.opts[idx];
+  doOpt(id,gk,val);
+}
 function doFlow(id,gk){sa(id,{ans:ga(id).ans?null:'done'});renderGrp(gk);updateProgress();}
 
 function updBadge(gk){
@@ -792,36 +879,35 @@ function updateProgress(){
 }
 
 function getCost(k){const e=document.getElementById('cost-'+k);return e?(parseFloat(e.value)||0):(COSTS[k]?.cost||0);}
-function getMx(){return{good:parseFloat(document.getElementById('mxg')?.value)||2.22,better:parseFloat(document.getElementById('mxbt')?.value)||2.6,best:parseFloat(document.getElementById('mxbs')?.value)||3.0};}
+function getMx(){return{good:parseFloat(document.getElementById('mxg')?.value)||2.22,best:parseFloat(document.getElementById('mxbs')?.value)||3.0};}
 function toMg(m){return Math.round((1-1/m)*100)+'%';}
 function fmtFull(n){return'$'+Math.round(n).toLocaleString();}
-function fmtK(n){if(n===0)return'$0';if(n>=1000)return'$'+(n/1000).toFixed(0)+'K';return fmtFull(n);}
-
-function calcCost(){
-  let total=0;const bd={};
-  function add(lbl,key,qty){const c=getCost(key);if(!c||!qty)return;const sub=c*qty;bd[lbl]=(bd[lbl]||0)+sub;total+=sub;}
-  Object.values(G).forEach(grp=>grp.items.forEach(item=>{
-    if(!item.costKey)return;
-    const a=ga(item.id),lbl=COSTS[item.costKey]?.label||item.costKey;
-    if(item.type==='qty'&&(a.qty||0)>0)add(lbl,item.costKey,a.qty);
-    if(item.type==='yesno'&&a.ans==='yes')add(lbl,item.costKey,1);
-    if(item.type==='yesqty'&&a.ans==='yes'&&(a.followQty||0)>0)add(lbl,item.costKey,a.followQty);
-  }));
-  return{total,bd};
-}
+function fmtK(n){if(n===0)return'$0';if(n>=1000)return'$'+(n/1000).toFixed(1)+'K';return fmtFull(n);}
+function finPmt(p,apr,n){if(!p||p<=0)return'—';const r=apr/12/100;return fmtK(p*r*Math.pow(1+r,n)/(Math.pow(1+r,n)-1))+'/mo';}
 
 function updEst(){
   const{total,bd}=calcCost(),mx=getMx();
-  const good=total*mx.good,better=total*mx.better,best=total*mx.best;
+  const gilLow=parseFloat(document.getElementById('gil-low')?.value)||0;
+  const gilHigh=parseFloat(document.getElementById('gil-high')?.value)||0;
+  const costLow=gilLow>0?gilLow:total;
+  const costHigh=gilHigh>0?gilHigh:(gilLow>0?gilLow:total);
+  const goodLow=costLow*mx.good,goodHigh=costHigh*mx.good;
+  const bestLow=costLow*mx.best,bestHigh=costHigh*mx.best;
   const s=(id,v)=>{const e=document.getElementById(id);if(e)e.textContent=v;};
-  s('tg',fmtFull(good));s('tb',fmtFull(better));s('tbs',fmtFull(best));
-  s('tgmo',fmtK(good/18)+'/mo');s('tbmo',fmtK(better/18)+'/mo');s('tbsmo',fmtK(best/18)+'/mo');
-  s('tgmg',toMg(mx.good)+' margin');s('tbmg',toMg(mx.better)+' margin');s('tbsmg',toMg(mx.best)+' margin');
-  s('mxng',toMg(mx.good)+' margin');s('mxnbt',toMg(mx.better)+' margin');s('mxnbs',toMg(mx.best)+' margin');
+  s('tg-low',fmtFull(goodLow));s('tg-high',fmtFull(goodHigh));
+  s('tbs-low',fmtFull(bestLow));s('tbs-high',fmtFull(bestHigh));
+  s('tgmg',toMg(mx.good)+' margin');s('tbsmg',toMg(mx.best)+' margin');
+  s('mxng',toMg(mx.good)+' margin');s('mxnbs',toMg(mx.best)+' margin');
   const bdEl=document.getElementById('ebd');
   if(bdEl){
-    if(!Object.keys(bd).length){bdEl.innerHTML='<div style="font-size:13px;color:var(--ink4);text-align:center;padding:8px 0;font-style:italic;">Add quantities to see breakdown</div>';}
-    else{let h='';Object.keys(bd).forEach(l=>{h+=`<div class="bdi"><span class="bdk">${eh(l)}</span><span class="bdv">${fmtFull(bd[l])}</span></div>`;});h+=`<div class="bdt"><span class="bdk">Total internal cost</span><span class="bdv">${fmtFull(total)}</span></div>`;bdEl.innerHTML=h;}
+    if(!Object.keys(bd).length&&!gilLow){bdEl.innerHTML='<div style="font-size:13px;color:var(--ink4);text-align:center;padding:8px 0;font-style:italic;">Add quantities or enter Gil\'s range above</div>';}
+    else{
+      let h='';
+      if(gilLow>0)h+=`<div class="bdi"><span class="bdk" style="color:var(--copper);">Gil range override</span><span class="bdv" style="color:var(--copper);">${fmtFull(gilLow)}${gilHigh&&gilHigh!==gilLow?' – '+fmtFull(gilHigh):''}</span></div>`;
+      Object.keys(bd).forEach(l=>{h+=`<div class="bdi"><span class="bdk">${eh(l)}</span><span class="bdv">${fmtFull(bd[l])}</span></div>`;});
+      if(total>0)h+=`<div class="bdt"><span class="bdk">Calculated cost</span><span class="bdv">${fmtFull(total)}</span></div>`;
+      bdEl.innerHTML=h;
+    }
   }
 }
 
@@ -883,7 +969,7 @@ function showPg(name){
   renderTabs();
   if(name==='report')buildGilReport();
   if(name==='proposal')buildProposal();
-  if(name==='estimate'){updEst();renderCostEditor();}
+  if(name==='estimate'){updEst();renderCostEditor();loadEst();updEst();}
   window.scrollTo(0,0);
 }
 function nextPg(){const i=S.pages.indexOf(S.page);if(i<S.pages.length-2)showPg(S.pages[i+1]);}
@@ -952,6 +1038,11 @@ function copyGilReport(){
 
 // ── PROPOSAL (Client-facing) ──
 function buildProposal(){
+  // Ensure cost editor is rendered and saved values loaded before calculating
+  if(!document.getElementById('cost-cab-base')){
+    renderCostEditor();
+    loadEst();
+  }
   // Date
   const el=document.getElementById('prop-date');
   if(el)el.textContent=new Date().toLocaleDateString('en-US',{year:'numeric',month:'long',day:'numeric'});
@@ -959,12 +1050,15 @@ function buildProposal(){
   const name=gv('fn');
   const greet=document.getElementById('prop-greeting');
   if(greet)greet.textContent=`Dear ${name!=='—'?name:'Valued Client'},`;
-  // Intro
+  // Intro — warm, sales-forward
   const intro=document.getElementById('prop-intro');
+  const addr=gv('fadr');
   const goal=gv('fgoal');
   if(intro){
-    const goalLine=goal!=='—'?` Based on your vision — "${goal.substring(0,120)}${goal.length>120?'…':''}" — here is our tailored proposal.`:'';
-    intro.textContent=`Thank you for welcoming us into your home at ${gv('fadr')==='—'?'your property':gv('fadr')}.${goalLine}`;
+    let txt=`It was a pleasure visiting your home${addr!=='—'?' at '+addr:''} and hearing about your vision for this project. `;
+    if(goal!=='—') txt+=`You mentioned that what matters most to you is: "${goal.substring(0,120)}${goal.length>120?'…':''}" — and that's exactly what we're going to deliver. `;
+    txt+=`At Miami First Remodeling, every project goes through Gil personally — that's 35+ years of expertise making sure your home gets done right, on time, and with zero surprises. Below you'll find your customized project scope and investment options.`;
+    intro.textContent=txt;
   }
   // Scope bullets
   const SLBLS={kitchen:'Kitchen Remodel',bathroom:'Bathroom Remodel',master:'Master Bath Remodel',floors:'Flooring',windows:'Impact Windows & Doors',paint:'Interior/Exterior Paint',closet:'Custom Closet',patio:'Outdoor / Patio',addition:'Home Addition'};
@@ -1002,19 +1096,33 @@ function buildProposal(){
 
 function updProposal(){
   const{total}=calcCost();const mx=getMx();
-  const good=total*mx.good,better=total*mx.better,best=total*mx.best;
+  const gilLow=parseFloat(document.getElementById('gil-low')?.value)||0;
+  const gilHigh=parseFloat(document.getElementById('gil-high')?.value)||0;
+  const costLow=gilLow>0?gilLow:total;
+  const costHigh=gilHigh>0?gilHigh:(gilLow>0?gilLow:total);
+  const goodLow=costLow*mx.good,goodHigh=costHigh*mx.good;
+  const bestLow=costLow*mx.best,bestHigh=costHigh*mx.best;
   const s=(id,v)=>{const e=document.getElementById(id);if(e)e.textContent=v;};
-  s('pt-good',fmtFull(good));s('pt-better',fmtFull(better));s('pt-best',fmtFull(best));
-  s('pt-good-mo',fmtK(good/18)+'/mo × 18');s('pt-better-mo',fmtK(better/18)+'/mo × 18');s('pt-best-mo',fmtK(best/18)+'/mo × 18');
+  // Show range in proposal — use Best as headline
+  s('pt-good',goodLow===goodHigh?fmtFull(goodLow):fmtFull(goodLow)+' – '+fmtFull(goodHigh));
+  s('pt-best',bestLow===bestHigh?fmtFull(bestLow):fmtFull(bestLow)+' – '+fmtFull(bestHigh));
+  s('pt-good-mo',finPmt(goodLow,8.99,60)+' (60mo)');
+  s('pt-best-mo',finPmt(bestLow,8.99,60)+' (60mo)');
+  // Financing table
+  [36,60,84].forEach(n=>{
+    s('fin-good-'+n,finPmt(goodLow,8.99,n));
+    s('fin-best-'+n,finPmt(bestLow,8.99,n));
+  });
   // Discount
   const pctOn=document.getElementById('disc-pct')?.checked;
-  const depOn=document.getElementById('disc-dep')?.checked;
   const pct=parseFloat(document.getElementById('disc-val')?.value)||10;
   const discEl=document.getElementById('disc-display');
   if(pctOn&&discEl){
     discEl.style.display='block';
-    const mult=1-pct/100;
-    s('pd-good',fmtFull(good*mult));s('pd-better',fmtFull(better*mult));s('pd-best',fmtFull(best*mult));
+    const mult=(100-pct)/100;
+    s('pd-good',fmtFull(bestLow*mult)+' – '+fmtFull(bestHigh*mult));
+    s('pd-better','—');
+    s('pd-best',fmtFull(bestLow*mult));
   } else if(discEl){discEl.style.display='none';}
 }
 
@@ -1059,6 +1167,7 @@ function copyProposal(){
   }
   const pnotes=document.getElementById('prop-notes')?.value?.trim();
   if(pnotes)t+=`\n${pnotes}\n`;
+  t+=`\n⭐ HOW DID WE DO?\nIf Juan took great care of you today, a quick Google review means the world to us — it helps other families find a contractor they can trust.\n👉 Search "Miami First Remodeling" on Google and leave a review for Juan.\n`;
   t+=`\nThis estimate is valid for 30 days from today.\n`;
   t+=`\nMiami First Remodeling Corporation · CGC1530409\n29 S Federal Hwy Unit B, Dania Beach FL 33004\n`;
   navigator.clipboard.writeText(t).then(()=>showToast('Proposal copied!')).catch(()=>alert(t));
@@ -1107,9 +1216,62 @@ function resetAll(){
   initAll();showPg('client');
 }
 
+// ── PERSISTENCE — $ tab values survive page changes ──
+const LS_KEY = 'klass_est_v1';
+function saveEst(){
+  try{
+    const d={
+      gilLow:document.getElementById('gil-low')?.value||'',
+      gilHigh:document.getElementById('gil-high')?.value||'',
+      mxg:document.getElementById('mxg')?.value||'',
+      mxbs:document.getElementById('mxbs')?.value||'',
+      costs:{}
+    };
+    Object.keys(COSTS).forEach(k=>{const e=document.getElementById('cost-'+k);if(e)d.costs[k]=e.value;});
+    localStorage.setItem(LS_KEY,JSON.stringify(d));
+  }catch(e){}
+}
+function loadEst(){
+  try{
+    const raw=localStorage.getItem(LS_KEY);if(!raw)return;
+    const d=JSON.parse(raw);
+    const sv=(id,v)=>{const e=document.getElementById(id);if(e&&v!=='')e.value=v;};
+    sv('gil-low',d.gilLow);sv('gil-high',d.gilHigh);
+    sv('mxg',d.mxg);sv('mxbs',d.mxbs);
+    if(d.costs)Object.keys(d.costs).forEach(k=>sv('cost-'+k,d.costs[k]));
+  }catch(e){}
+}
+function resetEst(){
+  if(!confirm('Reset all $ values to defaults?'))return;
+  try{localStorage.removeItem(LS_KEY);}catch(e){}
+  const sv=(id,v)=>{const e=document.getElementById(id);if(e)e.value=v;};
+  sv('gil-low','');sv('gil-high','');sv('mxg','2.22');sv('mxbs','3.0');
+  Object.keys(COSTS).forEach(k=>sv('cost-'+k,COSTS[k].cost));
+  updEst();showToast('$ values reset to defaults');
+}
+
+// ── PDF DOWNLOAD ──
+function dlPDF(){
+  // Switch to proposal page, then print
+  showPg('proposal');
+  setTimeout(()=>{
+    window.print();
+  },400);
+}
+
 function initAll(){
   Object.keys(G).forEach(k=>renderGrp(k));
-  renderCostEditor();updEst();updateProgress();
+  renderCostEditor();
+  loadEst(); // restore saved $ values
+  // Wire up save on any $ input change
+  document.addEventListener('input',e=>{
+    if(e.target.closest('#page-estimate')){
+      saveEst();
+      // If proposal was already viewed, keep it in sync
+      if(S.page==='proposal') updProposal();
+    }
+  });
+  updEst();updateProgress();
 }
 
 document.addEventListener('DOMContentLoaded',()=>{renderTabs();initAll();});
