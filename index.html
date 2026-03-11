@@ -158,15 +158,16 @@ select.fi{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.o
 .toast.show{opacity:1;}
 
 @media print {
-  body { background: white !important; }
-  .pline, .header, .bnav, .toast, .ewarn, .aibtn,
-  .page:not(#page-proposal), #page-proposal .rb:last-of-type .cpbtn,
-  #page-proposal .rb:last-of-type button:not(.print-hide) { display: none !important; }
-  #page-proposal { display: block !important; }
-  .main { padding: 0 !important; max-width: 100% !important; }
-  .rb { box-shadow: none !important; border: 1px solid #ddd !important; page-break-inside: avoid; }
+  * { -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }
+  body { background: white !important; margin: 0; }
+  .header, .bnav, .toast, .ewarn, .aibtn, .pline,
+  .page:not(#page-proposal) { display: none !important; }
+  #page-proposal { display: block !important; padding: 0 !important; }
+  #page-proposal .rb:last-child { display: none !important; }
+  .main { padding: 0 12px !important; max-width: 100% !important; }
+  .rb { box-shadow: none !important; border: 1px solid #e0ddd6 !important; page-break-inside: avoid; margin-bottom: 12px !important; }
   .tbox { border: 1px solid #ccc !important; }
-  body { font-size: 13px !important; }
+  a { color: inherit !important; }
 }
 
 @media(min-width:600px){.main{padding:26px 22px 130px;}}
@@ -376,24 +377,43 @@ select.fi{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.o
       <div class="tbox good"><div class="tlbl good">Good</div><div class="tprice good" id="pt-good">$—</div><div class="tmo" id="pt-good-mo" style="font-size:10px;">—/mo × 18 (0%)</div></div>
       <div class="tbox best"><div class="tlbl best">Best ★</div><div class="tprice best" id="pt-best">$—</div><div class="tmo" id="pt-best-mo" style="font-size:10px;">—/mo × 18 (0%)</div></div>
     </div>
-    <!-- Financing table at 8.99% APR -->
-    <div style="margin-top:14px;background:var(--cream);border-radius:10px;padding:12px 14px;">
-      <div style="font-size:10px;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;color:var(--ink4);margin-bottom:10px;">Monthly Payment at 8.99% APR</div>
+    <!-- 18 months 0% HERO BANNER -->
+    <div style="margin-top:14px;background:linear-gradient(135deg,#1a3a2a,#2d5a40);border-radius:12px;padding:16px;text-align:center;">
+      <div style="font-family:'Cormorant Garamond',serif;font-size:26px;font-weight:600;color:#ffffff;line-height:1.1;">18 Months</div>
+      <div style="font-family:'Cormorant Garamond',serif;font-size:22px;color:#8ecaa0;margin-bottom:4px;">0% Interest Financing</div>
+      <div style="font-size:11px;color:#a8d4b4;letter-spacing:0.06em;text-transform:uppercase;margin-bottom:10px;">No interest if paid in full within 18 months</div>
+      <a href="https://slicecredit.com" target="_blank" style="display:inline-block;background:white;color:#1a3a2a;font-size:12px;font-weight:700;padding:6px 18px;border-radius:20px;text-decoration:none;letter-spacing:0.04em;">Apply with Slice →</a>
+      <div style="margin-top:10px;font-size:11px;color:#8ecaa0;font-style:italic;">💳 Bad credit? We can still help — ask us about options.</div>
+    </div>
+    <!-- LendKey financing table — 5/10/15 yrs -->
+    <div style="margin-top:12px;background:var(--cream);border-radius:10px;padding:12px 14px;">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;">
+        <div style="font-size:10px;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;color:var(--ink4);">Monthly Payment — 8.99% APR</div>
+        <a href="https://www.lendkey.com" target="_blank" style="font-size:10px;color:var(--copper);font-weight:600;text-decoration:none;">Apply with LendKey →</a>
+      </div>
       <div style="display:grid;grid-template-columns:auto 1fr 1fr;gap:6px 10px;align-items:center;">
         <div style="font-size:11px;font-weight:700;color:var(--ink4);">Term</div>
         <div style="font-size:11px;font-weight:700;color:var(--sage);text-align:center;">Good</div>
         <div style="font-size:11px;font-weight:700;color:var(--copper);text-align:center;">Best ★</div>
-        <div style="font-size:12px;color:var(--ink3);">36 mo</div>
-        <div style="font-size:13px;font-weight:600;color:var(--sage);text-align:center;" id="fin-good-36">—</div>
-        <div style="font-size:13px;font-weight:600;color:var(--copper);text-align:center;" id="fin-best-36">—</div>
-        <div style="font-size:12px;color:var(--ink3);">60 mo</div>
-        <div style="font-size:13px;font-weight:600;color:var(--sage);text-align:center;" id="fin-good-60">—</div>
-        <div style="font-size:13px;font-weight:600;color:var(--copper);text-align:center;" id="fin-best-60">—</div>
-        <div style="font-size:12px;color:var(--ink3);">84 mo</div>
-        <div style="font-size:13px;font-weight:600;color:var(--sage);text-align:center;" id="fin-good-84">—</div>
-        <div style="font-size:13px;font-weight:600;color:var(--copper);text-align:center;" id="fin-best-84">—</div>
+        <div style="font-size:12px;color:var(--ink3);">5 years</div>
+        <div style="font-size:13px;font-weight:600;color:var(--sage);text-align:center;" id="fin-good-5">—</div>
+        <div style="font-size:13px;font-weight:600;color:var(--copper);text-align:center;" id="fin-best-5">—</div>
+        <div style="font-size:12px;color:var(--ink3);">10 years</div>
+        <div style="font-size:13px;font-weight:600;color:var(--sage);text-align:center;" id="fin-good-10">—</div>
+        <div style="font-size:13px;font-weight:600;color:var(--copper);text-align:center;" id="fin-best-10">—</div>
+        <div style="font-size:12px;color:var(--ink3);">15 years</div>
+        <div style="font-size:13px;font-weight:600;color:var(--sage);text-align:center;" id="fin-good-15">—</div>
+        <div style="font-size:13px;font-weight:600;color:var(--copper);text-align:center;" id="fin-best-15">—</div>
       </div>
-      <div style="margin-top:8px;font-size:10px;color:var(--ink4);">Based on credit approval · 18-month 0% promo also available</div>
+    </div>
+    <!-- Financing Calculator -->
+    <div style="margin-top:12px;background:var(--cream);border-radius:10px;padding:12px 14px;">
+      <div style="font-size:10px;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;color:var(--ink4);margin-bottom:10px;">💰 Payment Calculator</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:10px;">
+        <div class="fl"><div class="flab">Loan Amount ($)</div><input class="fi" id="fin-calc-amt" type="number" placeholder="auto" oninput="runFinCalc()" style="font-size:14px;"></div>
+        <div class="fl"><div class="flab">APR (%)</div><input class="fi" id="fin-calc-rate" type="number" value="8.99" step="0.1" oninput="runFinCalc()" style="font-size:14px;"></div>
+      </div>
+      <div id="fin-calc-out" style="display:grid;grid-template-columns:repeat(3,1fr);gap:6px;"></div>
     </div>
   </div>
 
@@ -425,9 +445,8 @@ select.fi{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.o
     <!-- Discounted prices display -->
     <div id="disc-display" style="display:none;">
       <div class="flab" style="margin-bottom:8px;color:var(--copper);">After discount</div>
-      <div class="trow">
+      <div class="trow" style="grid-template-columns:1fr 1fr;">
         <div class="tbox good"><div class="tlbl good">Good</div><div class="tprice good" id="pd-good" style="font-size:20px;">$—</div></div>
-        <div class="tbox better"><div class="tlbl better">Better</div><div class="tprice better" id="pd-better" style="font-size:20px;">$—</div></div>
         <div class="tbox best"><div class="tlbl best">Best ★</div><div class="tprice best" id="pd-best" style="font-size:20px;">$—</div></div>
       </div>
     </div>
@@ -446,13 +465,21 @@ select.fi{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.o
   <!-- Notes + closing -->
   <div class="rb">
     <div class="rt" style="font-size:15px;margin-bottom:10px;">Personal Message</div>
-    <textarea class="fi" id="prop-notes" placeholder="Add a personal note… e.g. 'It was wonderful meeting you both — I'm excited about what we're going to create for your home.'" style="min-height:80px;" oninput="updProposal()"></textarea>
+    <div id="prop-rep-sig" style="display:none;background:var(--cream);border-radius:10px;padding:12px 14px;margin-bottom:10px;border-left:3px solid var(--copper);">
+      <div style="font-size:10px;font-weight:700;letter-spacing:0.06em;text-transform:uppercase;color:var(--copper);margin-bottom:6px;">Rep Contact Card</div>
+      <div id="prop-sig-content" style="font-size:12px;color:var(--ink2);line-height:1.8;"></div>
+    </div>
+    <textarea class="fi" id="prop-notes" placeholder="Pre-filled when you add your name above…" style="min-height:90px;" oninput="updProposal()"></textarea>
 
     <!-- Review CTA -->
     <div style="margin-top:14px;background:var(--sage-bg);border:1.5px solid var(--sage-b);border-radius:12px;padding:14px 16px;">
       <div style="font-size:11px;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;color:var(--sage);margin-bottom:6px;">⭐ Review Request</div>
       <div style="font-size:13px;color:var(--ink2);line-height:1.6;">We'd love to hear how your experience with us went. If Juan took great care of you today, a quick Google review means the world to us — it helps other families find a contractor they can trust.</div>
-      <div style="margin-top:8px;font-size:12px;font-weight:600;color:var(--sage);">👉 Search "Miami First Remodeling" on Google → Leave a review for <span id="prop-rep-name">your rep</span></div>
+      <div style="margin-top:10px;">
+        <a href="https://www.google.com/search?sca_esv=0546383d171bc4a7&si=AL3DRZEsmMGCryMMFSHJ3StBhOdZ2-6yYkXd_doETEE1OR-qOQfH1-5NRFKaYrrosW-4w-xNFA8AR17-FhdyfWSpjDg4ro9caAsTfw8bv-6NUAWKbyKwhn5ZDqhhAXKCmKvwvQE9V3lg7LLV_DPG7LckBrSJK4CjDbgKI3mHFqmGQZryDDC4tYY%3D&q=Klassikasa+Kitchen+%26+Bathroom+Showroom+Reviews#lrd=0x88d9ab9f52aa24c5:0xab6370a715777aed,3,,,," target="_blank" style="display:inline-flex;align-items:center;gap:8px;background:#4285F4;color:white;padding:10px 18px;border-radius:24px;text-decoration:none;font-size:13px;font-weight:700;">
+          ⭐ Leave a Google Review for <span id="prop-rep-name" style="color:#ffd700;">your rep</span>
+        </a>
+      </div>
     </div>
 
     <div style="margin-top:12px;padding:12px 14px;background:var(--cream);border-radius:10px;font-size:12px;color:var(--ink4);line-height:1.6;">
@@ -530,33 +557,55 @@ select.fi{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.o
 <div class="toast" id="toast">Copied!</div>
 <script>
 const COSTS={
-  'cab-base':{label:'Base cabinet box',cost:180},'cab-upper':{label:'Upper cabinet box',cost:140},
-  'cab-pantry':{label:'Pantry / tall box',cost:320},'cab-island':{label:'Island cabinet box',cost:200},
-  'cab-vanity':{label:'Vanity cabinet box',cost:160},'slab-std':{label:'Quartz slab standard',cost:650},
-  'slab-prem':{label:'Quartz slab premium',cost:950},'slab-granite':{label:'Granite slab',cost:580},
-  'slab-marble':{label:'Marble / Quartzite slab',cost:1100},'waterfall':{label:'Waterfall edge (side)',cost:420},
+  // Cabinets — Gil price per box
+  'cab-base':{label:'Cabinet box',cost:350},'cab-upper':{label:'Cabinet box (upper)',cost:350},
+  'cab-pantry':{label:'Pantry cabinet',cost:800},'cab-island':{label:'Island cabinet box',cost:350},
+  'cab-vanity':{label:'Vanity cabinet box',cost:350},
+  // Slabs — Gil price per slab
+  'slab-std':{label:'Slab (standard)',cost:1000},'slab-tajmahal':{label:'Taj Mahal slab',cost:1400},
+  'slab-prem':{label:'Premium slab',cost:3000},'slab-granite':{label:'Granite slab',cost:1000},
+  'slab-marble':{label:'Marble / Quartzite slab',cost:1400},'waterfall':{label:'Waterfall edge (side)',cost:420},
+  // Sub packages (whole-job subcontractor price)
+  'sub-rr':{label:'Sub — Full bathroom (RR)',cost:6000},
+  'sub-master-std':{label:'Sub — Master bath (standard)',cost:9000},
+  'sub-master-prem':{label:'Sub — Master bath (premium)',cost:12000},
+  'sub-kitchen':{label:'Sub — Full kitchen',cost:10000},
+  // Demo & Paint
   'demo-kitchen':{label:'Kitchen demo',cost:1800},'demo-bath':{label:'Bathroom demo',cost:1200},
   'paint-k':{label:'Kitchen paint',cost:1200},'paint-b':{label:'Bathroom paint',cost:650},
   'paint-room':{label:'Interior room paint',cost:450},'paint-ext':{label:'Exterior paint per 100sqft',cost:80},
-  'sink-swap':{label:'Sink swap same location',cost:280},'sink-move':{label:'Sink relocation',cost:1200},
+  // Plumbing
+  'sink-swap':{label:'Kitchen sink',cost:350},'sink-rr':{label:'Bathroom sink',cost:50},
+  'sink-move':{label:'Sink relocation',cost:1200},'faucet-bath':{label:'Bathroom faucet',cost:100},
+  'faucet-kitchen':{label:'Kitchen faucet',cost:350},'shower-head':{label:'Shower head',cost:700},
   'dw':{label:'Dishwasher install',cost:220},'gas-line':{label:'Gas line for range',cost:800},
-  'pot-filler':{label:'Pot filler',cost:950},'led-lf':{label:'Under-cab LED per LF',cost:45},
-  'recess':{label:'Recessed light each',cost:120},'hood':{label:'Range hood install',cost:650},
-  'gfci':{label:'GFCI outlet each',cost:85},'shower-slab':{label:'Shower wall slab',cost:580},
+  'pot-filler':{label:'Pot filler',cost:950},
+  // Electrical
+  'led-lf':{label:'Under-cab LED per LF',cost:45},'recess':{label:'LED recessed light each',cost:120},
+  'outlet':{label:'Outlet each',cost:120},'hood':{label:'Range hood install',cost:650},
+  'panel-std':{label:'Electric panel (standard)',cost:3000},'panel-prem':{label:'Electric panel (premium)',cost:5000},
+  // Shower & Bath
+  'shower-slab':{label:'Shower wall slab',cost:1000},'shower-door':{label:'Shower door (frameless)',cost:1500},
   'pan-custom':{label:'Custom tile shower pan',cost:950},'pan-prefab':{label:'Prefab shower pan',cost:380},
-  'glass-frame':{label:'Frameless glass enclosure',cost:1800},'glass-semi':{label:'Semi-frameless glass',cost:1100},
+  'glass-frame':{label:'Frameless glass enclosure',cost:1500},'glass-semi':{label:'Semi-frameless glass',cost:1100},
   'tub-convert':{label:'Tub-to-shower conversion',cost:2800},'tub-fs':{label:'Freestanding soaking tub',cost:1800},
-  'toilet-swap':{label:'Toilet swap same location',cost:240},'toilet-move':{label:'Toilet relocation',cost:1400},
+  'toilet-swap':{label:'Toilet swap',cost:240},'toilet-move':{label:'Toilet relocation',cost:1400},
   'bidet':{label:'Bidet seat',cost:180},'heated-50':{label:'Heated floor per 50sqft',cost:680},
-  'exhaust':{label:'Exhaust fan upgrade',cost:180},'led-mirror':{label:'LED backlit mirror',cost:320},
-  'tile-std':{label:'Standard tile per sqft',cost:6},'tile-large':{label:'Large format tile sqft',cost:11},
-  'tile-demo':{label:'Tile demo per sqft',cost:2.5},'floor-lvp':{label:'LVP flooring sqft',cost:5},
-  'floor-hw':{label:'Engineered hardwood sqft',cost:9},'win-small':{label:'Impact window small',cost:420},
-  'win-med':{label:'Impact window medium',cost:680},'win-large':{label:'Impact window large',cost:950},
-  'win-slide6':{label:'Impact sliding door 6ft',cost:1800},'win-slide12':{label:'Impact sliding door 12ft',cost:3200},
-  'win-entry':{label:'Impact entry door',cost:1600},'closet-lf':{label:'Closet system per LF',cost:280},
-  'pavers-sqft':{label:'Pavers installed sqft',cost:18},'pergola':{label:'Pergola structure',cost:8500},
-  'screen-sqft':{label:'Screen enclosure sqft',cost:12},'add-sqft':{label:'Addition per sqft',cost:180},
+  'exhaust':{label:'Exhaust fan upgrade',cost:180},'led-mirror':{label:'LED mirror',cost:250},
+  // Tile (install + material separate)
+  'tile-std':{label:'Tile installation per sqft',cost:6},'tile-mat':{label:'Tile material per sqft',cost:4},
+  'tile-large':{label:'Large format tile sqft',cost:11},'tile-demo':{label:'Tile demo per sqft',cost:2.5},
+  // Floors
+  'floor-lvp':{label:'LVP material per sqft',cost:3},'floor-lvp-labor':{label:'LVP labor per sqft',cost:3},
+  'floor-hw':{label:'Engineered hardwood sqft',cost:9},
+  // Windows & Doors
+  'win-small':{label:'Impact window small',cost:420},'win-med':{label:'Impact window medium',cost:680},
+  'win-large':{label:'Impact window large',cost:950},'win-slide6':{label:'Impact sliding door 6ft',cost:1800},
+  'win-slide12':{label:'Impact sliding door 12ft',cost:3200},'win-entry':{label:'Impact entry door',cost:1600},
+  // Other
+  'closet-lf':{label:'Closet system per LF',cost:280},'pavers-sqft':{label:'Pavers installed sqft',cost:18},
+  'pergola':{label:'Pergola structure',cost:8500},'screen-sqft':{label:'Screen enclosure sqft',cost:12},
+  'add-sqft':{label:'Addition per sqft',cost:180},
 };
 
 const G={
@@ -1075,8 +1124,23 @@ function buildProposal(){
   if(el)el.textContent=new Date().toLocaleDateString('en-US',{year:'numeric',month:'long',day:'numeric'});
   // Rep name
   const rep=gv('frep')!=='—'?gv('frep'):'your rep';
-  const repEl=document.getElementById('prop-rep-name');
-  if(repEl)repEl.textContent=rep;
+  document.querySelectorAll('[id="prop-rep-name"]').forEach(el=>el.textContent=rep);
+  // Rep signature card
+  const sig=getRepSig(rep);
+  const sigCard=document.getElementById('prop-rep-sig');
+  const sigContent=document.getElementById('prop-sig-content');
+  if(sigCard&&sig){
+    sigCard.style.display='block';
+    sigContent.innerHTML=`<strong>${sig.name}</strong> · ${sig.title}<br>${sig.phone} · <a href="mailto:${sig.email}" style="color:var(--copper);">${sig.email}</a><br>Office: ${sig.office} · Miami First Remodeling Corp`;
+  } else if(sigCard){sigCard.style.display='none';}
+  // Pre-populate personal message if empty
+  const notesEl=document.getElementById('prop-notes');
+  const clientName=gv('fn')!=='—'?gv('fn'):'there';
+  if(notesEl&&!notesEl.value&&!notesEl._prefilled){
+    const repName=rep!=='your rep'?rep:'us';
+    notesEl.value=`It was a genuine pleasure meeting you today${clientName!=='there'?', '+clientName:''}. I'm excited about what we're going to build together — Miami First Remodeling will take care of every detail, just the way Gil has done it for 35+ years. Looking forward to transforming your home.\n\n— ${repName}`;
+    notesEl._prefilled=true;
+  }
   // Greeting
   const name=gv('fn');
   const greet=document.getElementById('prop-greeting');
@@ -1129,25 +1193,33 @@ function updProposal(){
   const{total}=calcCost();
   const mx=getMx();
   const cost=S.gilOverride>0?S.gilOverride:total;
-  const clientPrice=cost*mx;
+  // Gil's number IS Good (the floor). Best = Good + $5k.
+  const goodPrice=cost*mx;
+  const bestPrice=goodPrice+5000;
   const s=(id,v)=>{const e=document.getElementById(id);if(e)e.textContent=v;};
-  s('pt-good',fmtFull(clientPrice));
-  s('pt-best',fmtFull(clientPrice));
-  s('pt-good-mo',finPmt(clientPrice,8.99,60)+' (60mo)');
-  s('pt-best-mo',finPmt(clientPrice,8.99,60)+' (60mo)');
-  [36,60,84].forEach(n=>{
-    s('fin-good-'+n,finPmt(clientPrice,8.99,n));
-    s('fin-best-'+n,finPmt(clientPrice,8.99,n));
+  s('pt-good',fmtFull(goodPrice));
+  s('pt-best',fmtFull(bestPrice));
+  s('pt-good-mo',finPmt(goodPrice,8.99,60)+'/mo');
+  s('pt-best-mo',finPmt(bestPrice,8.99,60)+'/mo');
+  // Financing table — 5/10/15 years
+  [[5,60],[10,120],[15,180]].forEach(([yr,mo])=>{
+    s('fin-good-'+yr,finPmt(goodPrice,8.99,mo));
+    s('fin-best-'+yr,finPmt(bestPrice,8.99,mo));
   });
+  // Calculator placeholder
+  const ca=document.getElementById('fin-calc-amt');
+  if(ca&&!ca.value)ca.placeholder=fmtFull(bestPrice);
+  setTimeout(runFinCalc,50);
+  // Discount
   const pctOn=document.getElementById('disc-pct')?.checked;
   const pct=parseFloat(document.getElementById('disc-val')?.value)||10;
   const discEl=document.getElementById('disc-display');
   if(pctOn&&discEl){
     discEl.style.display='block';
-    const discPrice=clientPrice*(100-pct)/100;
-    s('pd-good',fmtFull(discPrice));
-    s('pd-better',fmtFull(discPrice));
-    s('pd-best',fmtFull(discPrice));
+    const mult=(100-pct)/100;
+    s('pd-good',fmtFull(goodPrice*mult));
+    s('pd-better',fmtFull(goodPrice*mult));
+    s('pd-best',fmtFull(bestPrice*mult));
   } else if(discEl){discEl.style.display='none';}
 }
 
@@ -1275,6 +1347,45 @@ function resetEst(){
   S.mx=3.0;const mx=document.getElementById('mxbs');if(mx)mx.value='3.0';
   Object.keys(COSTS).forEach(k=>{const e=document.getElementById('cost-'+k);if(e)e.value=COSTS[k].cost;});
   updEst();showToast('$ values reset to defaults');
+}
+
+// ── PDF DOWNLOAD ──
+function dlPDF(){
+  if(S.page!=='proposal'){showPg('proposal');setTimeout(()=>{window.print();},600);}
+  else{window.print();}
+}
+
+// ── FINANCING CALCULATOR ──
+function runFinCalc(){
+  const{total}=calcCost();
+  const mx=getMx();
+  const cost=S.gilOverride>0?S.gilOverride:total;
+  const best=cost*mx;
+  const amt=parseFloat(document.getElementById('fin-calc-amt')?.value)||best;
+  const apr=parseFloat(document.getElementById('fin-calc-rate')?.value)||8.99;
+  const out=document.getElementById('fin-calc-out');
+  if(!out||!amt)return;
+  const terms=[[5,60],[7,84],[10,120],[15,180],[20,240]];
+  out.innerHTML=terms.map(([yr,mo])=>`
+    <div style="background:white;border-radius:8px;padding:10px;text-align:center;border:1px solid var(--cream2);">
+      <div style="font-size:10px;color:var(--ink4);font-weight:700;">${yr} yr</div>
+      <div style="font-size:15px;font-weight:700;color:var(--ink2);">${finPmt(amt,apr,mo)}</div>
+      <div style="font-size:9px;color:var(--ink4);">/month</div>
+    </div>`).join('');
+}
+
+// ── REP SIGNATURES ──
+const REP_SIGS={
+  'juan diaz':{
+    name:'Juan Diaz',
+    title:'Accounts Executive & Project Manager',
+    phone:'786-760-6946',
+    email:'juand@miamifirstremodeling.com',
+    office:'786.600.2644'
+  }
+};
+function getRepSig(name){
+  return REP_SIGS[name.toLowerCase().trim()]||null;
 }
 
 function initAll(){
